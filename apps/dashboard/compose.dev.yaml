@@ -1,0 +1,15 @@
+services:
+  dashboard:
+    image: lumen-radar-api-dashboard:dev
+    pull_policy: build
+    build:
+      target: development
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./src:/app/src:ro
+      - ./public:/app/public:ro
+      - ./next.config.ts:/app/next.config.ts:ro
+      - ./postcss.config.mjs:/app/postcss.config.mjs:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
+      - ./eslint.config.mjs:/app/eslint.config.mjs:ro
