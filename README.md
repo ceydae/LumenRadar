@@ -1,5 +1,7 @@
 # Lumen Radar
 
+![Lumen Radar](branding/lumenradar-github-banner.png)
+
 Start development from this folder:
 
 ```sh

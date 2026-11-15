@@ -25,9 +25,9 @@ export default function Header() {
         scrolled ? 'border-b border-white/10 bg-navy-950/85 backdrop-blur-xl' : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-        <a href="#top" className="flex items-center">
-          <img src="/brand/logo-white.svg" alt="Lumen Radar" className="h-6 w-auto sm:h-7" />
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-5">
+        <a href="#top" className="flex h-11 shrink-0 items-center">
+          <img src="/brand/logo-header-white.svg" alt="Lumen Radar" width="1805" height="351" className="block h-5 w-auto min-[360px]:h-7 min-[400px]:h-8 sm:h-9" />
         </a>
 
         <nav className="hidden items-center gap-7 md:flex">
@@ -50,7 +50,7 @@ export default function Header() {
           </a>
           <a
             href="#demo"
-            className="group inline-flex items-center gap-1.5 rounded-full bg-signal-400 px-4 py-2 text-[13px] font-bold text-navy-950 transition hover:bg-signal-500 hover:text-navy-950"
+            className="group inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-signal-400 px-3 py-2 sm:px-4 text-[13px] font-bold text-navy-950 transition hover:bg-signal-500 hover:text-navy-950"
           >
             Explore demo
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
