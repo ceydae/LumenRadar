@@ -29,6 +29,7 @@ Discord login returns 503 until both Discord credentials are set.
 
 Create an application in the [Discord Developer Portal](https://discord.com/developers/applications).
 Copy its OAuth2 client ID and secret into `DISCORD_CLIENT_ID` and `DISCORD_CLIENT_SECRET`.
+Login requests the `identify`, `email`, and `guilds.members.read` scopes.
 Register this redirect URL exactly:
 
 ```text
@@ -81,6 +82,28 @@ The JWT is separate from the session cookie. `/token` requires the cookie, not a
 Use `credentials: 'include'` for session, token, and sign-out requests. The frontend and API should
 share a site in production, for example `app.example.com` and `api.example.com`, so browser cookie
 restrictions do not block the session.
+
+## Docker
+
+From the repository root, with `apps/api/.env` configured:
+
+```sh
+docker compose up -d --build
+docker compose logs -f api
+```
+
+Compose runs the compiled API and PostgreSQL 17. Both use `restart: always` to restart after
+crashes and when Docker starts. Docker must be running for either service to run.
+The API waits for PostgreSQL, runs migrations, then starts. PostgreSQL data lives in a named volume.
+Only the API port is exposed, using `PORT` from `apps/api/.env`.
+
+The same commands also work inside `apps/api` to run just the API stack.
+
+Set `POSTGRES_USER`, `POSTGRES_DB`, and `POSTGRES_PASSWORD` in `.env`. Use a URL-safe password,
+such as the output of `openssl rand -hex 32`. Compose builds the internal database URL from these
+values; your local `DATABASE_URL` stays available for running outside Docker.
+Keep the database credentials unchanged after the volume has been initialized.
+The image excludes `.env` and runs as the `node` user.
 
 ## Build and checks
 

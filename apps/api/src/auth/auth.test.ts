@@ -29,7 +29,7 @@ describe('Discord authentication with PostgreSQL', () => {
       if (url === 'https://discord.com/api/oauth2/token') {
         return Response.json(options.tokenStatus ? { error: 'invalid_grant' } : {
           access_token: 'discord-access-token', refresh_token: 'discord-refresh-token',
-          token_type: 'Bearer', expires_in: 3600, scope: 'identify email',
+          token_type: 'Bearer', expires_in: 3600, scope: 'identify email guilds.members.read',
         }, { status: options.tokenStatus ?? 200 });
       }
       if (url === 'https://discord.com/api/users/@me') {
@@ -71,8 +71,9 @@ describe('Discord authentication with PostgreSQL', () => {
     expect(url.origin).toBe('https://discord.com');
     expect(url.searchParams.get('client_id')).toBe(testConfig.DISCORD_CLIENT_ID);
     expect(url.searchParams.get('redirect_uri')).toBe(`${testConfig.BETTER_AUTH_URL}/api/auth/callback/discord`);
-    expect(url.searchParams.get('scope')).toContain('identify');
-    expect(url.searchParams.get('scope')).toContain('email');
+    expect(url.searchParams.get('scope')?.split(' ').sort()).toEqual([
+      'email', 'guilds.members.read', 'identify',
+    ]);
     expect(start.headers['set-cookie']).toBeDefined();
     expect(start.headers['cache-control']).toBe('no-store');
   });
@@ -91,6 +92,9 @@ describe('Discord authentication with PostgreSQL', () => {
     const accounts = await database.pool.query('SELECT * FROM account WHERE "accountId" = $1', [profile.id]);
     expect(accounts.rows).toHaveLength(1);
     expect(accounts.rows[0].providerId).toBe('discord');
+    expect(accounts.rows[0].scope.split(/[ ,]+/).sort()).toEqual([
+      'email', 'guilds.members.read', 'identify',
+    ]);
     expect(accounts.rows[0].accessToken).not.toBe('discord-access-token');
     expect(accounts.rows[0].refreshToken).not.toBe('discord-refresh-token');
     const sessions = await database.pool.query('SELECT * FROM session WHERE "userId" = $1', [users.rows[0].id]);

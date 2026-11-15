@@ -1,0 +1,43 @@
+name: lumen-radar-api
+
+services:
+  postgres:
+    image: postgres:17-bookworm
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-lumen_radar}
+      POSTGRES_DB: ${POSTGRES_DB:-lumen_radar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    stop_grace_period: 30s
+
+  api:
+    build: .
+    init: true
+    restart: always
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${PORT:-3051}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:?Set BETTER_AUTH_URL in .env}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Set BETTER_AUTH_SECRET in .env}
+      CLIENT_ORIGIN: ${CLIENT_ORIGIN:?Set CLIENT_ORIGIN in .env}
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID:-}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET:-}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-lumen_radar}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/${POSTGRES_DB:-lumen_radar}
+    ports:
+      - "${PORT:-3051}:3051"
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
+    stop_grace_period: 15s
+
+volumes:
+  postgres_data:

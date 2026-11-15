@@ -26,7 +26,7 @@ export function createOpenApi(config: Config): OpenAPIV3.Document {
           tags: ['Auth'],
           operationId: 'signInWithDiscord',
           summary: 'Start Discord login',
-          description: 'Call with credentials included. Navigate to the returned URL. Discord calls the callback route after approval.',
+          description: 'Call with credentials included. Navigate to the returned URL. Requests identify, email, and guilds.members.read. Discord calls the callback route after approval.',
           requestBody: {
             required: true,
             content: json({
