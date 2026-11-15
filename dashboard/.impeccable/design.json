@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-15T00:00:00+03:00",
+  "title": "Design System: Lumen Radar",
+  "extensions": {
+    "shadows": [
+      { "name": "selected-tab", "value": "0 1px 3px #0b275716", "purpose": "Selected metric tab only." },
+      { "name": "tooltip", "value": "0 10px 30px #0b275720", "purpose": "Tooltip separation from reports." },
+      { "name": "dialog", "value": "0 24px 80px #06183340", "purpose": "Modal above the dimmed workspace." }
+    ],
+    "breakpoints": [
+      { "name": "wide", "value": "1600px" },
+      { "name": "compact-desktop", "value": "1240px" },
+      { "name": "icon-navigation", "value": "1060px" },
+      { "name": "stacked-analytics", "value": "800px" },
+      { "name": "mobile", "value": "640px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary button", "kind": "button", "refersTo": "button-primary",
+      "description": "Compact main workspace action.",
+      "html": "<button class=\"ds-primary\">Manage connections</button>",
+      "css": ".ds-primary{font-family:var(--font-sans,'Plus Jakarta Sans Variable',sans-serif);font-size:11px;font-weight:550;display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:10px 14px;border:1px solid var(--lumen-navy,#0b2757);border-radius:6px;background:var(--lumen-navy,#0b2757);color:white;cursor:pointer}.ds-primary:hover{background:var(--lumen-blue,#244a97);border-color:var(--lumen-blue,#244a97)}.ds-primary:focus-visible{outline:2px solid var(--primary,#244a97);outline-offset:4px}"
+    },
+    {
+      "name": "Secondary button", "kind": "button", "refersTo": "button-secondary",
+      "description": "Bordered supporting workspace action.",
+      "html": "<button class=\"ds-secondary\">Export</button>",
+      "css": ".ds-secondary{font-family:var(--font-sans,'Plus Jakarta Sans Variable',sans-serif);font-size:11px;font-weight:550;min-height:36px;padding:10px 14px;border:1px solid var(--border,#e2e8f0);border-radius:6px;background:white;color:var(--foreground,#142b4d);cursor:pointer}.ds-secondary:hover{border-color:#becce0;background:#f7f9fd}.ds-secondary:focus-visible{outline:2px solid var(--primary,#244a97);outline-offset:4px}"
+    },
+    {
+      "name": "Select field", "kind": "input", "refersTo": "select",
+      "description": "Native selector with a compact custom chevron.",
+      "html": "<label class=\"ds-field\"><select aria-label=\"Date range\"><option>Last 30 days</option><option>Last 7 days</option></select><svg viewBox=\"0 0 24 24\" width=\"15\" height=\"15\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"/></svg></label>",
+      "css": ".ds-field{position:relative;display:inline-flex;align-items:center}.ds-field select{appearance:none;font-family:var(--font-sans,'Plus Jakarta Sans Variable',sans-serif);font-size:11px;min-height:35px;padding:8px 30px 8px 11px;background:var(--surface,#fff);color:var(--foreground,#142b4d);border:1px solid var(--border,#e2e8f0);border-radius:6px;cursor:pointer}.ds-field svg{position:absolute;right:9px;pointer-events:none;color:var(--muted,#65758a)}.ds-field select:focus-visible{outline:2px solid var(--primary,#244a97);outline-offset:4px}"
+    },
+    {
+      "name": "Navigation item", "kind": "nav",
+      "description": "Active navigation on the navy brand rail.",
+      "html": "<nav class=\"ds-navigation\" aria-label=\"Workspace\"><a class=\"ds-nav-active\" href=\"#overview\" aria-current=\"page\">Overview<span aria-hidden=\"true\"></span></a></nav>",
+      "css": ".ds-navigation{background:var(--lumen-navy,#0b2757);padding:18px;font-family:var(--font-sans,'Plus Jakarta Sans Variable',sans-serif)}.ds-nav-active{display:flex;align-items:center;gap:12px;min-height:44px;padding:12px 14px;border-radius:7px;background:#ffffff12;color:white;font-size:11.5px;font-weight:500;text-decoration:none}.ds-nav-active span{width:4px;height:4px;margin-left:auto;border-radius:50%;background:#aacbff}.ds-nav-active:hover{background:#ffffff1d}.ds-nav-active:focus-visible{outline:2px solid #a5c5ff;outline-offset:4px}"
+    },
+    {
+      "name": "Connected badge", "kind": "chip", "refersTo": "badge-success",
+      "description": "Noninteractive connected status with text and a dot.",
+      "html": "<span class=\"ds-connected\">Connected</span>",
+      "css": ".ds-connected{display:inline-flex;align-items:center;gap:5px;width:fit-content;white-space:nowrap;font-family:var(--font-sans,'Plus Jakarta Sans Variable',sans-serif);font-size:9px;font-weight:550;line-height:1.25;border-radius:4px;padding:4px 6px;color:var(--success,#267058);background:var(--success-background,#edf7f2)}.ds-connected:before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor}"
+    },
+    {
+      "name": "Report panel", "kind": "card", "refersTo": "panel",
+      "description": "Flat report container with a compact heading.",
+      "html": "<section class=\"ds-panel\"><h2>Activity over time</h2><p>Daily website and API activity for the selected period.</p></section>",
+      "css": ".ds-panel{min-width:0;background:var(--surface,#fff);color:var(--foreground,#142b4d);border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:23px 23px 18px;font-family:var(--font-sans,'Plus Jakarta Sans Variable',sans-serif)}.ds-panel h2{margin:0;font-size:13px;letter-spacing:-.02em;font-weight:650}.ds-panel p{margin:6px 0 0;color:var(--muted,#65758a);font-size:10px;line-height:1.7}"
+    }
+  ],
+  "narrative": {
+    "overview": "Lumen Radar is an operating workspace: a navy navigation anchor beside a bright, neutral report surface. Compact measurements and connection coverage support repeated inspection. The supplied brand kit is the authority for the original stepped-L symbol, white wordmark, navy and blue.",
+    "keyCharacteristics": ["Compact report typography with prominent measurements.", "Flat white panels, cool borders and restrained blue emphasis.", "Locally bundled typography and original brand assets."],
+    "rules": [],
+    "dos": ["Do use the supplied Lumen Radar symbol and wordmark.", "Do keep report surfaces neutral and use blue for useful emphasis.", "Do retain sample-data disclosure and explicit status labels.", "Do expose chart values as text and preserve tabular numerals."],
+    "donts": ["Don't replace the local Plus Jakarta Sans font with remote font requests.", "Don't imply disabled future pages or illustrative connections are live.", "Don't add decorative chart animation."]
+  }
+}

@@ -1,0 +1,20 @@
+node_modules/
+.next/
+out/
+build/
+coverage/
+.cache/
+.turbo/
+.eslintcache
+*.tsbuildinfo
+.env*
+!.env.example
+!.env.*.example
+.vercel/
+next-env.d.ts
+*.log
+
+# Local editor files
+.idea/
+*.suo
+*.sw?
