@@ -4,9 +4,9 @@ import express from 'express';
 import type { Pool } from 'pg';
 
 import router from './routes/index.js';
-import type { Config } from './config.js';
 import type { Auth } from './auth/auth.js';
 import { errorHandler } from './errors.js';
+import type { Config } from './types/config.js';
 import notFound from './middlewares/notFound.js';
 import { createOpenApi } from './docs/openapi.js';
 

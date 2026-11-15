@@ -1,8 +1,8 @@
 import type { OpenAPIV3 } from 'openapi-types';
 
 import { json } from './jsonContent.js';
-import type { Config } from '../config.js';
 import { error } from './errorResponse.js';
+import type { Config } from '../types/config.js';
 import { projectPaths } from './projects/paths.js';
 import { projectSchemas } from './projects/schemas.js';
 

@@ -1,7 +1,8 @@
+import type { Pool } from 'pg';
 import { betterAuth } from 'better-auth';
 import { jwt } from 'better-auth/plugins';
-import type { Pool } from 'pg';
-import type { Config } from '../config.js';
+
+import type { Config } from '../types/config.js';
 
 export const SEVEN_DAYS = 60 * 60 * 24 * 7;
 
