@@ -1,4 +1,9 @@
 name: lumen-radar-api
 
 include:
-  - path: ./apps/api/compose.yaml
+  - path:
+      - ./apps/api/compose.yaml
+      - ./apps/api/compose.dev.yaml
+  - path:
+      - ./apps/landing/compose.yaml
+      - ./apps/landing/compose.dev.yaml

@@ -1,0 +1,13 @@
+services:
+  api:
+    image: lumen-radar-api-api:dev
+    pull_policy: build
+    build:
+      target: development
+    environment:
+      NODE_ENV: development
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./src:/app/src:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
+      - ./tsconfig.build.json:/app/tsconfig.build.json:ro

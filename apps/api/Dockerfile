@@ -1,9 +1,22 @@
-FROM node:24-bookworm-slim AS build
+FROM node:24-bookworm-slim AS dependencies
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
 RUN npm i
+
+FROM dependencies AS development
+
+ENV NODE_ENV=development
+COPY tsconfig.json tsconfig.build.json ./
+COPY src ./src
+
+USER node
+EXPOSE 3051
+
+CMD ["sh", "-c", "node --import=tsx src/database/migrate.ts && exec node node_modules/tsx/dist/cli.mjs watch src/server.ts"]
+
+FROM dependencies AS build
 
 COPY tsconfig.json tsconfig.build.json ./
 COPY src ./src

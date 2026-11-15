@@ -1,32 +1,35 @@
-# React + TypeScript + Vite
+# Lumen Radar landing
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```sh
+npm ci
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Development and preview use `http://127.0.0.1:3050`. Build and check with:
+
+```sh
+npm run lint
+npm run build
+npm run preview
+```
+
+To serve the production build locally, run `npm start`.
+
+From the repository root, start the landing page, API, and PostgreSQL:
+
+```sh
+docker compose up
+```
+
+The default root setup runs Vite with hot reload. Source edits update the running app automatically.
+For production, run `docker compose -f compose.prod.yaml up -d --build` from the root.
+Production serves the compiled `dist/` files without source mounts or file watchers.
+
+Both images use `node:24-bookworm-slim`, matching the API, and run as the `node` user.
+Docker publishes the landing page only on `127.0.0.1:3050`.
+The container listens on its internal network interface so Docker can forward requests.
+
+Inside `apps/landing`, use `docker compose -f compose.yaml -f compose.dev.yaml up` for development,
+or `docker compose up -d --build` for production.

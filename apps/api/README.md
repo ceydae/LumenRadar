@@ -88,16 +88,20 @@ restrictions do not block the session.
 From the repository root, with `apps/api/.env` configured:
 
 ```sh
-docker compose up -d --build
+docker compose up
 docker compose logs -f api
 ```
 
-Compose runs the compiled API and PostgreSQL 17. Both use `restart: always` to restart after
+The default root setup runs the API with tsx watch and reloads source edits automatically.
+For production, run `docker compose -f compose.prod.yaml up -d --build` from the root.
+Production runs the compiled API without source mounts or file watchers.
+The API and PostgreSQL 17 use `restart: always` to restart after
 crashes and when Docker starts. Docker must be running for either service to run.
 The API waits for PostgreSQL, runs migrations, then starts. PostgreSQL data lives in a named volume.
 Only the API port is exposed, using `PORT` from `apps/api/.env`.
 
-The same commands also work inside `apps/api` to run just the API stack.
+Inside `apps/api`, use `docker compose -f compose.yaml -f compose.dev.yaml up` for development,
+or `docker compose up -d --build` for production.
 
 Set `POSTGRES_USER`, `POSTGRES_DB`, and `POSTGRES_PASSWORD` in `.env`. Use a URL-safe password,
 such as the output of `openssl rand -hex 32`. Compose builds the internal database URL from these
