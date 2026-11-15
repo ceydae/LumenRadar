@@ -7,7 +7,10 @@ Next.js App Router and TypeScript starter.
 Animate UI, Motion, and Radix UI are installed. The root client provider
 follows the system's reduced-motion preference. Tailwind CSS supplies the styling
 foundation. Animate UI powers connection dialogs and metric tooltips.
-It also powers chart metric tabs. Plus Jakarta Sans is self-hosted through
+It also powers chart metric tabs. On the MVP installation page, Animate UI's
+Accordion handles the setup guide and CopyButton / CopyButtonIcon animate the
+copy action and its success state. The existing provider respects reduced motion.
+Plus Jakarta Sans is self-hosted through
 Fontsource. Assets in `public/brand` and the favicons come from the supplied
 Lumen Radar brand kit; the SVG viewBoxes are trimmed to remove export padding.
 
@@ -30,32 +33,52 @@ Documentation: https://animate-ui.com/docs
 
 The Overview includes date filters, chart metric selection, CSV export for available
 data, and connection details. New projects start with empty reports. Other navigation
-items are disabled until their pages are built. There is no backend, tracker, or
-live OpenTelemetry collector.
+items are disabled until their pages are built. Authentication uses the API;
+the script records website page views. Aggregated reports and live OpenTelemetry
+collection are not connected yet.
 
-## Local account and project flow
+## Discord sign-in and project flow
 
-`/signup` collects a name, email, password, and password confirmation. It creates
-a browser-local profile scoped to the normalized email and signs the user in.
-Duplicate profiles and mismatched passwords show form errors.
+`/login` is the single entry page for new and returning users. It offers only
+Continue with Discord; `/signup` redirects there. The client follows the contract
+at http://localhost:3051/docs: POST `/api/auth/sign-in/social` with `provider`,
+`callbackURL`, and `errorCallbackURL`, then navigate to the returned Discord URL.
+The API creates accounts on first sign-in. Requests include credentials; the API's
+HttpOnly cookie authenticates GET `/api/auth/get-session` and POST `/api/auth/sign-out`.
 
-Signed-in visitors without a completed project go to `/onboarding`. The two steps
-collect project details and select website analytics, API analytics, or both.
-API selections require a service name. Saved project drafts resume at source
-selection, and the Back button preserves project fields. Completing setup opens
-the dashboard with the user's project and sources marked Awaiting data. Selecting
-a source does not install a tracker or establish a real connection.
+After sign-in, `/` shows the account's projects and a square Create Project tile.
+Each account can have five projects, including drafts. The API enforces this
+limit under a transaction lock so concurrent requests cannot exceed it.
+`/projects/new` collects the name, website URL, and Stellar description (200
+characters maximum). `/projects/:id/setup` enables Website analytics; API analytics
+and Website & API are disabled and labelled Coming Soon. Drafts can be resumed
+from their project tiles. `/onboarding` redirects to the new project route.
 
-`/login` accepts a valid email and a password of at least six characters. This is
-browser-only flow state, not real authentication. Only a version and email are
-stored in localStorage; the password is never stored or sent to a server. Signing
-out clears that session record; the account's project remains saved. Reloads preserve the session and other tabs synchronize
-sign-in/out. Client redirects send signed-out visitors to `/login` and signed-in
-visitors to `/`. Workspace records are stored separately per email. These redirects
-do not provide server-side access control, and login does not verify credentials.
+`/projects/:id` opens that project's installation page. For the MVP, the overview
+charts, metrics, connection dialog, and date filter are commented out in Dashboard
+and Header. The page shows a brand banner, the installation panel, and an expandable
+setup guide, without data-dependent widgets. Its installation panel provides a
+copyable, project-specific script to insert before `</head>`. The API serves
+`/tracker.js`; it records initial page views and SPA path changes through
+`/api/collect`, accepting the configured website origin. Only paths are stored,
+without query strings, visitor cookies, or identifiers. This is basic page-view
+collection, not verified traffic or unique visitor counting. The report widgets
+still show empty states until reporting queries are connected. A live website
+requires a publicly accessible HTTPS API address rather than localhost.
 
-Replace `src/lib/session.ts` and `src/hooks/useLocalSession.ts` when implementing
-server authentication. The user-facing interface intentionally has no demo labels.
+Sessions are checked on mount, window focus, and every minute. Old browser-local
+sessions cannot authenticate. Sign-out clears the server session. Projects and
+drafts are persisted in PostgreSQL and every project request is scoped to the
+authenticated user ID. Legacy browser-local project drafts are not imported.
+
+Use http://localhost:3052 with the local API at http://localhost:3051. Set the API's
+`CLIENT_ORIGIN=http://localhost:3052` and configure Discord credentials and the
+callback URL in the API environment. `localhost` and `127.0.0.1` are different
+cookie hosts; the dashboard redirects local 127.0.0.1 visits to localhost when
+the API uses localhost. Use the same host for both apps. For other deployments, set
+`NEXT_PUBLIC_API_URL` before building the dashboard (including Docker builds),
+and match the API's `CLIENT_ORIGIN` to the dashboard origin. No JWT is persisted
+in browser storage. API or OAuth failures appear with a retry option.
 
 ## Development
 
@@ -64,7 +87,7 @@ npm install
 npm run dev
 ```
 
-Open http://127.0.0.1:3052. Both development and production scripts bind locally on port 3052.
+Open http://localhost:3052. Both development and production scripts bind locally on port 3052.
 
 ## Docker
 
@@ -93,6 +116,7 @@ or `docker compose up -d --build` for production.
 npm run lint
 npm run typecheck
 npm run build
+node --test src/lib/session.test.mjs
 ```
 
 Use `npm start` to serve a production build.
