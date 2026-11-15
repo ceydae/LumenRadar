@@ -1,137 +1,80 @@
-import { createBrowserStore } from "./browser-store";
-import { signIn } from "./session";
-import { isValidEmail } from "../constants/auth";
-import type {
-  ConnectionMode,
-  LocalProject,
-  LocalWorkspace,
-} from "../types/workspace";
+import type { LocalProject } from "../types/workspace";
 
-const normalizeEmail = (email: string) => email.trim().toLowerCase();
-export const workspaceStore = (email: string) =>
-  createBrowserStore(`lumen-radar:workspace:${normalizeEmail(email)}`);
+export const MAX_PROJECTS = 5;
+export const MAX_DESCRIPTION_LENGTH = 200;
+export const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3051").replace(/\/$/, "");
 
-export function isWebsiteUrl(value: string) {
-  try {
-    const url = new URL(value);
-    return (
-      (url.protocol === "https:" || url.protocol === "http:") && !!url.hostname
-    );
-  } catch {
-    return false;
+type ProjectDetails = Pick<LocalProject, "name" | "websiteUrl" | "stellarDescription">;
+type ProjectState = { projects: LocalProject[]; loaded: boolean; error: string };
+const initialState: ProjectState = { projects: [], loaded: false, error: "" };
+const stores = new Map<string, ReturnType<typeof createProjectStore>>();
+
+async function projectRequest(path = "", body?: object, method = "POST") {
+  const response = await fetch(`${API_URL}/api/projects${path}`, {
+    method: body ? method : "GET",
+    credentials: "include",
+    cache: "no-store",
+    signal: AbortSignal.timeout(15000),
+    ...(body ? { headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {}),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || "Your projects couldn't be loaded. Please try again.");
+  return data;
+}
+
+function createProjectStore() {
+  let state = initialState;
+  let loading: Promise<void> | undefined;
+  const listeners = new Set<() => void>();
+  function update(next: ProjectState) {
+    state = next;
+    listeners.forEach((listener) => listener());
   }
-}
-
-export function parseWorkspace(
-  raw: string | null | undefined,
-  email: string,
-): LocalWorkspace | null {
-  if (!raw) return null;
-  try {
-    const workspace = JSON.parse(raw) as LocalWorkspace;
-    if (
-      !workspace ||
-      workspace.version !== 1 ||
-      workspace.email !== normalizeEmail(email) ||
-      typeof workspace.name !== "string"
-    )
-      return null;
-    const p = workspace.project;
-    if (
-      p !== null &&
-      (!p ||
-        typeof p.id !== "string" ||
-        typeof p.name !== "string" ||
-        !p.name.trim() ||
-        typeof p.websiteUrl !== "string" ||
-        !isWebsiteUrl(p.websiteUrl) ||
-        typeof p.stellarDescription !== "string" ||
-        typeof p.serviceName !== "string" ||
-        typeof p.createdAt !== "string" ||
-        ![null, "web", "api", "both"].includes(p.connectionMode))
-    )
-      return null;
-    return workspace;
-  } catch {
-    return null;
-  }
-}
-
-function readWorkspace(email: string) {
-  return parseWorkspace(workspaceStore(email).getSnapshot(), email);
-}
-
-export function registerAccount(name: string, email: string) {
-  email = normalizeEmail(email);
-  if (!name.trim() || !isValidEmail(email))
-    throw new Error("Enter your name and a valid email address.");
-  const store = workspaceStore(email);
-  const previous = store.getSnapshot();
-  if (parseWorkspace(previous, email))
-    throw new Error("An account already uses this email. Sign in to continue.");
-  store.write(
-    JSON.stringify({
-      version: 1,
-      email,
-      name: name.trim(),
-      project: null,
-    } satisfies LocalWorkspace),
-  );
-  try {
-    signIn(email);
-  } catch (error) {
-    store.write(previous);
-    throw error;
-  }
-}
-
-export function saveProject(
-  email: string,
-  details: Pick<LocalProject, "name" | "websiteUrl" | "stellarDescription">,
-) {
-  if (
-    !details.name.trim() ||
-    !details.stellarDescription.trim() ||
-    !isWebsiteUrl(details.websiteUrl.trim())
-  )
-    throw new Error(
-      "Enter a project name, an HTTP or HTTPS website URL, and a short description.",
-    );
-  const workspace = readWorkspace(email) ?? {
-    version: 1,
-    email: normalizeEmail(email),
-    name: email.split("@")[0],
-    project: null,
+  return {
+    getSnapshot: () => state,
+    getServerSnapshot: () => initialState,
+    subscribe: (listener: () => void) => {
+      listeners.add(listener);
+      return () => { listeners.delete(listener); };
+    },
+    load() {
+      if (loading) return loading;
+      loading = (async () => {
+        try {
+          const projects: LocalProject[] = await projectRequest();
+          update({ projects, loaded: true, error: "" });
+        } catch (error) {
+          update({ ...state, loaded: true, error: error instanceof Error ? error.message : "Your projects couldn't be loaded. Please try again." });
+        } finally { loading = undefined; }
+      })();
+      return loading;
+    },
+    async save(details: ProjectDetails, projectId?: string) {
+      if (details.stellarDescription.trim().length > MAX_DESCRIPTION_LENGTH)
+        throw new Error("Keep your description to 200 characters or fewer.");
+      const project: LocalProject = await projectRequest(projectId ? `/${projectId}` : "", details, projectId ? "PATCH" : "POST");
+      const projects = [...state.projects.filter((item) => item.id !== project.id), project];
+      update({ projects, loaded: true, error: "" });
+      return project;
+    },
+    async connect(projectId: string) {
+      const project: LocalProject = await projectRequest(`/${projectId}`, { connectionMode: "web" }, "PATCH");
+      update({ ...state, projects: state.projects.map((item) => item.id === projectId ? project : item), error: "" });
+      return project;
+    },
   };
-  const previous = workspace.project;
-  workspace.project = {
-    ...details,
-    name: details.name.trim(),
-    websiteUrl: new URL(details.websiteUrl.trim()).href,
-    stellarDescription: details.stellarDescription.trim(),
-    id: previous?.id ?? crypto.randomUUID(),
-    createdAt: previous?.createdAt ?? new Date().toISOString(),
-    connectionMode: previous?.connectionMode ?? null,
-    serviceName: previous?.serviceName ?? "",
-  };
-  workspaceStore(email).write(JSON.stringify(workspace));
 }
 
-export function saveConnection(
-  email: string,
-  mode: ConnectionMode,
-  serviceName: string,
-) {
-  const workspace = readWorkspace(email);
-  if (!workspace?.project) throw new Error("Create your project first.");
-  if (!["web", "api", "both"].includes(mode))
-    throw new Error("Choose a data source.");
-  if (mode !== "web" && !serviceName.trim())
-    throw new Error("Enter a service name for your API.");
-  workspace.project = {
-    ...workspace.project,
-    connectionMode: mode,
-    serviceName: mode === "web" ? "" : serviceName.trim(),
-  };
-  workspaceStore(email).write(JSON.stringify(workspace));
+export function workspaceStore(accountId: string) {
+  let store = stores.get(accountId);
+  if (!store) { store = createProjectStore(); stores.set(accountId, store); }
+  return store;
+}
+
+export function saveProject(accountId: string, details: ProjectDetails, projectId?: string) {
+  return workspaceStore(accountId).save(details, projectId);
+}
+
+export function saveConnection(accountId: string, projectId: string) {
+  return workspaceStore(accountId).connect(projectId);
 }

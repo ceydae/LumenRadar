@@ -7,17 +7,18 @@ import { saveProject } from "@/lib/workspace";
 import type { LocalProject } from "@/types/workspace";
 
 export default function ProjectForm({
-  email,
+  accountId,
   project,
   onComplete,
 }: {
-  email: string;
+  accountId: string;
   project: LocalProject | null;
-  onComplete: () => void;
+  onComplete: (project: LocalProject) => void;
 }) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const [description, setDescription] = useState(project?.stellarDescription ?? "");
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (pending) return;
     const form = event.currentTarget;
@@ -26,12 +27,13 @@ export default function ProjectForm({
     setPending(true);
     setError("");
     try {
-      saveProject(email, {
+      const saved = await saveProject(accountId, {
         name: String(fields.get("projectName") ?? ""),
         websiteUrl: String(fields.get("website") ?? ""),
         stellarDescription: String(fields.get("description") ?? ""),
-      });
-      onComplete();
+      }, project?.id);
+      onComplete(saved);
+      setPending(false);
     } catch (error) {
       setError(
         error instanceof Error
@@ -78,13 +80,15 @@ export default function ProjectForm({
           name="description"
           placeholder="Tell us briefly what you're building on Stellar."
           rows={4}
-          defaultValue={project?.stellarDescription}
+          value={description}
+          onChange={(event) => setDescription(event.target.value)}
+          aria-describedby="description-count"
           required
-          maxLength={500}
+          maxLength={200}
           disabled={pending}
         />
-        <span className="field-hint">
-          A short description is enough.
+        <span className="field-hint" id="description-count">
+          {description.length}/200 characters
         </span>
       </div>
       {error && (
