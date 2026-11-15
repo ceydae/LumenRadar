@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --lumen-navy: #0b2757;
@@ -23,7 +23,7 @@
   --color-primary: var(--primary);
   --color-border: var(--border);
   --color-accent: var(--accent);
-  --font-sans: "Plus Jakarta Sans Variable", sans-serif;
+  --font-sans: 'Plus Jakarta Sans Variable', sans-serif;
 }
 
 * {
@@ -177,7 +177,7 @@ summary {
   color: white;
 }
 .nav-active::after {
-  content: "";
+  content: '';
   width: 4px;
   height: 4px;
   margin-left: auto;
@@ -386,7 +386,7 @@ summary {
   background: var(--success-background);
 }
 .badge-success::before {
-  content: "";
+  content: '';
   width: 4px;
   height: 4px;
   border-radius: 50%;
@@ -637,7 +637,7 @@ h2 {
   background: transparent;
   white-space: nowrap;
 }
-.metric-tab[data-state="active"],
+.metric-tab[data-state='active'],
 .metric-tab[data-active] {
   background: white;
   color: var(--lumen-navy);
@@ -1461,6 +1461,24 @@ th:first-child {
   cursor: wait;
   opacity: 0.75;
 }
+.discord-submit {
+  justify-content: center;
+  gap: 12px;
+  min-height: 50px;
+  font-size: 13px;
+}
+.login-content > .form-error {
+  margin-bottom: 20px;
+}
+.session-retry {
+  color: inherit;
+  background: transparent;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  font: inherit;
+}
 .form-error {
   color: #a13232;
   font-size: 11px;
@@ -1469,7 +1487,8 @@ th:first-child {
 .login-help {
   margin-top: 24px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
+  line-height: 1.8;
   text-align: center;
 }
 .login-footer {
@@ -1639,15 +1658,6 @@ th:first-child {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
-.signup-form {
-  gap: 17px;
-}
-.login-content:has(.signup-form) {
-  padding-block: 45px;
-}
-.signup-form .login-submit {
-  margin-top: 5px;
-}
 .input-field textarea {
   width: 100%;
   resize: vertical;
@@ -1739,7 +1749,7 @@ th:first-child {
   font-weight: 500;
 }
 .setup-progress li + li::before {
-  content: "";
+  content: '';
   width: 52px;
   height: 1px;
   background: var(--border);
@@ -1756,15 +1766,15 @@ th:first-child {
   font-variant-numeric: tabular-nums;
   background: white;
 }
-.setup-progress li[aria-current="step"] {
+.setup-progress li[aria-current='step'] {
   color: var(--lumen-navy);
 }
-.setup-progress li[aria-current="step"] .step-number {
+.setup-progress li[aria-current='step'] .step-number {
   background: var(--lumen-navy);
   color: white;
   border-color: var(--lumen-navy);
 }
-.setup-progress li[data-complete="true"] .step-number {
+.setup-progress li[data-complete='true'] .step-number {
   background: var(--accent);
   color: var(--primary);
   border-color: var(--accent);
@@ -2025,5 +2035,652 @@ th:first-child {
 @media (prefers-reduced-motion: reduce) {
   .connection-choice {
     transition: none;
+  }
+}
+
+/* Project selection and installation extend the existing account and report surfaces. */
+.projects-page {
+  min-height: 100dvh;
+  background: var(--background);
+}
+.projects-main {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 56px 32px;
+}
+.projects-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.projects-heading h1 {
+  font-size: 30px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+}
+.projects-heading p {
+  color: var(--muted);
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.project-count {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+.project-card {
+  aspect-ratio: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--foreground);
+  text-decoration: none;
+  transition:
+    border-color 160ms ease-out,
+    background-color 160ms ease-out;
+}
+.project-card:hover {
+  border-color: var(--lumen-blue);
+  background: var(--accent);
+}
+.project-card h2 {
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.project-card p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+}
+.project-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--lumen-blue);
+}
+.project-card-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  background: var(--accent);
+  border-radius: 8px;
+}
+.project-card-status {
+  font-size: 11px;
+  color: var(--muted);
+}
+.create-project-card {
+  align-items: center;
+  justify-content: center;
+  border-style: dashed;
+  text-align: center;
+  color: var(--lumen-blue);
+}
+.create-project-card strong {
+  font-size: 16px;
+  font-weight: 600;
+}
+.create-project-card > span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.create-project-card:disabled {
+  cursor: not-allowed;
+  color: var(--muted);
+  background: var(--background);
+}
+.projects-limit {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.projects-back {
+  margin-bottom: 28px;
+  width: fit-content;
+}
+.project-load-error {
+  padding: 64px 28px;
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+.project-load-error h1 {
+  font-size: 24px;
+}
+.project-load-error p {
+  color: var(--muted);
+  line-height: 1.8;
+}
+.connection-choice[data-unavailable='true'] {
+  opacity: 1;
+  cursor: not-allowed;
+  background: var(--background);
+}
+.connection-choice[data-unavailable='true'] .choice-icon {
+  color: var(--muted);
+}
+.connection-choice[data-unavailable='true'] .choice-check {
+  opacity: 0.4;
+}
+.choice-copy strong {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.coming-soon-label {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+  padding: 3px 7px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.website-installation {
+  margin: 28px 38px 0;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  min-width: 0;
+}
+.installation-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 15px;
+}
+.installation-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--lumen-navy);
+}
+.installation-title h2 {
+  font-size: 16px;
+  font-weight: 650;
+}
+.website-installation p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+.website-installation pre {
+  margin-top: 18px;
+  padding: 18px;
+  overflow-x: auto;
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--lumen-navy);
+  font-size: 12px;
+  line-height: 1.8;
+  user-select: all;
+}
+.website-installation .installation-note {
+  margin-top: 14px;
+}
+.copy-script-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+@media (max-width: 640px) {
+  .projects-main {
+    padding: 32px 20px;
+  }
+  .projects-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .project-card {
+    padding: 16px;
+    gap: 12px;
+  }
+  .project-card h2,
+  .create-project-card strong {
+    font-size: 14px;
+  }
+  .project-card-top svg {
+    width: 17px;
+  }
+  .project-card-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .project-card p,
+  .project-card-status,
+  .create-project-card > span {
+    font-size: 11px;
+  }
+  .website-installation {
+    margin: 18px 16px 0;
+    padding: 18px;
+  }
+  .installation-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+@media (max-width: 360px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* MVP project page: installation only; analytics sections remain commented in Dashboard. */
+.project-installation-page {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 34px 38px 52px;
+}
+.installation-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+  padding: 32px;
+  border-radius: 12px;
+  background: var(--lumen-navy);
+  color: var(--surface);
+}
+.installation-banner h1 {
+  font-size: clamp(25px, 2.2vw, 32px);
+  line-height: 1.35;
+  letter-spacing: -0.03em;
+  font-weight: 650;
+}
+.installation-banner p {
+  max-width: 62ch;
+  margin-top: 12px;
+  color: #dce8fa;
+  font-size: 13px;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+.installation-banner strong {
+  color: var(--surface);
+  font-weight: 600;
+}
+.installation-banner img {
+  flex-shrink: 0;
+  width: 72px;
+  height: auto;
+}
+.project-installation-page .website-installation {
+  margin: 26px 0 0;
+}
+.installation-guide {
+  margin-top: 30px;
+}
+.installation-guide h2 {
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 650;
+}
+.installation-guide > p {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+.installation-faq {
+  margin-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.installation-faq-item {
+  border-bottom: 1px solid var(--border);
+}
+.installation-faq-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: 100%;
+  padding: 18px 0;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.installation-faq-trigger:hover {
+  color: var(--lumen-blue);
+}
+.installation-faq-trigger svg {
+  flex-shrink: 0;
+  transition: transform 220ms ease-out;
+}
+.installation-faq-trigger[data-state='open'] svg {
+  transform: rotate(180deg);
+}
+.installation-faq-content {
+  overflow: hidden;
+}
+.installation-faq-content p {
+  max-width: 76ch;
+  padding: 0 0 18px;
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--muted);
+}
+@media (prefers-reduced-motion: reduce) {
+  .installation-faq-trigger svg {
+    transition: none;
+  }
+}
+@media (max-width: 640px) {
+  .project-installation-page {
+    padding: 22px 16px 36px;
+  }
+  .installation-banner {
+    padding: 24px;
+    gap: 20px;
+  }
+  .installation-banner img {
+    display: none;
+  }
+  .installation-banner p {
+    font-size: 12px;
+  }
+}
+
+/* Project header: identity, location, and a single website action. */
+.topbar.project-header {
+  height: auto;
+  min-height: 122px;
+  gap: 24px;
+  padding: 20px 38px;
+  flex-wrap: nowrap;
+}
+.project-header-context {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  flex: 1;
+}
+.project-header-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.project-header-breadcrumb a {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+}
+.project-header-breadcrumb > svg {
+  color: var(--muted);
+}
+.header-project-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  width: fit-content;
+  max-width: 100%;
+  text-align: start;
+}
+.header-project-mark {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: var(--lumen-navy);
+  color: var(--surface);
+  font-size: 0.8125rem;
+  font-weight: 650;
+}
+.header-project-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.header-project-name {
+  font-size: 1.0625rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.header-project-domain {
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.header-project-trigger {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--foreground);
+  margin: -6px;
+  padding: 6px;
+  font: inherit;
+}
+.header-project-trigger[data-state='open'] {
+  background: var(--accent);
+  border-color: var(--border);
+}
+.header-project-trigger[data-state='open'] .header-project-domain {
+  color: var(--foreground);
+}
+.header-project-chevron {
+  margin-inline: 10px 2px;
+  color: var(--muted);
+}
+.project-header-actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.project-website-link {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--foreground);
+  background: var(--surface);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  font-weight: 550;
+  white-space: nowrap;
+}
+.project-switcher-menu {
+  z-index: 60;
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  max-height: var(--radix-dropdown-menu-content-available-height);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--foreground);
+  box-shadow: 0 12px 32px #0b275718;
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin);
+}
+.project-switcher-label {
+  padding: 8px 10px 12px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.project-switcher-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 60px;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.project-switcher-item[data-highlighted],
+.project-switcher-all[data-highlighted] {
+  background: var(--accent);
+  outline: 2px solid var(--lumen-blue);
+  outline-offset: -2px;
+}
+.project-switcher-item[data-state='checked'] {
+  background: var(--accent);
+}
+.project-switcher-item[data-state='checked'] .project-switcher-domain,
+.project-switcher-item[data-highlighted] .project-switcher-domain {
+  color: var(--foreground);
+}
+.project-switcher-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  background: var(--accent);
+  color: var(--lumen-navy);
+  border-radius: 7px;
+  font-size: 0.6875rem;
+  font-weight: 650;
+}
+.project-switcher-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+  font-size: 0.8125rem;
+  font-weight: 550;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.project-switcher-domain {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+.project-switcher-check {
+  display: inline-flex;
+  color: var(--lumen-blue);
+}
+.project-switcher-separator {
+  margin: 6px 0;
+  height: 1px;
+  background: var(--border);
+}
+.project-switcher-all {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 44px;
+  padding: 10px;
+  font-size: 0.8125rem;
+  border-radius: 6px;
+}
+@media (hover: hover) {
+  .project-header-breadcrumb a:hover {
+    text-decoration-color: currentColor;
+  }
+  .header-project-trigger:hover {
+    background: var(--accent);
+  }
+  .header-project-trigger:hover .header-project-domain {
+    color: var(--foreground);
+  }
+  .project-website-link:hover {
+    background: var(--accent);
+    border-color: var(--lumen-blue);
+  }
+}
+@media (max-width: 640px) {
+  .topbar.project-header {
+    min-height: 0;
+    padding: 20px 16px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .project-header-context {
+    flex-basis: 100%;
+    gap: 16px;
+  }
+  .header-project-name {
+    font-size: 1rem;
+  }
+  .header-project-trigger {
+    width: 100%;
+  }
+  .header-project-trigger .header-project-copy {
+    flex: 1;
+  }
+  /* The menu exposes the complete name to pointer and keyboard users. */
+  .header-project-trigger .header-project-name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  .header-project-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+  }
+  .project-header-actions {
+    width: 100%;
+  }
+  .project-website-link {
+    min-height: 44px;
   }
 }
