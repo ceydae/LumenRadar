@@ -64,7 +64,28 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000.
+Open http://127.0.0.1:3052. Both development and production scripts bind locally on port 3052.
+
+## Docker
+
+From the repository root, start all apps in development mode:
+
+```sh
+docker compose up
+```
+
+Dashboard source edits reload automatically. For production:
+
+```sh
+docker compose -f compose.prod.yaml up -d --build
+```
+
+Both dashboard images use `node:24-bookworm-slim` and run as the `node` user.
+Docker publishes only `127.0.0.1:3052`. Production uses Next.js standalone output,
+with no source mounts or watchers. Both modes restart automatically after crashes.
+
+Inside `apps/dashboard`, use `docker compose -f compose.yaml -f compose.dev.yaml up` for development,
+or `docker compose up -d --build` for production.
 
 ## Checks
 

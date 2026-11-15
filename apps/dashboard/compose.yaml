@@ -1,0 +1,10 @@
+services:
+  dashboard:
+    build:
+      context: .
+      target: runtime
+    init: true
+    restart: always
+    ports:
+      - "127.0.0.1:3052:3052"
+    stop_grace_period: 15s

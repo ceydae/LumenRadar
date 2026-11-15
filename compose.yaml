@@ -7,3 +7,6 @@ include:
   - path:
       - ./apps/landing/compose.yaml
       - ./apps/landing/compose.dev.yaml
+  - path:
+      - ./apps/dashboard/compose.yaml
+      - ./apps/dashboard/compose.dev.yaml

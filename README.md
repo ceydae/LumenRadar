@@ -6,7 +6,7 @@ Start development from this folder:
 docker compose up
 ```
 
-Source edits reload the API and update the landing page automatically. No `--watch` flag is needed.
+Source edits reload the API and update the landing page and dashboard automatically. No `--watch` flag is needed.
 Code is mounted read-only; each container keeps its own Linux dependencies.
 After changing dependencies or a Dockerfile, run `docker compose up --build` again.
 
@@ -27,16 +27,17 @@ docker compose logs -f
 ```
 
 Requires Docker Compose 2.20.3 or newer. The root Compose file includes the landing page,
-API, and PostgreSQL. It reads the API settings from `apps/api/.env`.
+API, dashboard, and PostgreSQL. It reads the API settings from `apps/api/.env`.
 The project name stays `lumen-radar-api` to reuse the existing database volume.
 
 | App | Local address |
 | --- | --- |
 | Landing | `http://127.0.0.1:3050` |
 | API | `http://127.0.0.1:3051` |
+| Dashboard | `http://127.0.0.1:3052` |
 
-Both published ports bind to `127.0.0.1`. PostgreSQL has no published port.
-The landing page and API use `node:24-bookworm-slim` and restart automatically after crashes.
+All published ports bind to `127.0.0.1`. PostgreSQL has no published port.
+All apps use `node:24-bookworm-slim` and restart automatically after crashes.
 
 Each app keeps its Dockerfile, production `compose.yaml`, development `compose.dev.yaml`,
 and settings in its own folder. To add an app, include both files in the root `compose.yaml`:
