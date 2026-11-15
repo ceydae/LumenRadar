@@ -1,4 +1,4 @@
-import type { Config } from '../config.js';
+import type { Config } from '../../src/config.js';
 
 export const testConfig: Config = {
   NODE_ENV: 'test',

@@ -3,7 +3,8 @@ import request from 'supertest';
 import { APIError } from 'better-auth/api';
 import { describe, expect, it, vi } from 'vitest';
 import type { NextFunction, Request, Response } from 'express';
-import { errorHandler } from './errors.js';
+
+import { errorHandler } from '../../src/errors.js';
 
 describe('error responses', () => {
   it.each([new Error('private database detail'), 'unexpected rejection'])(

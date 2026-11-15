@@ -10,6 +10,8 @@ FROM dependencies AS development
 ENV NODE_ENV=development
 COPY tsconfig.json tsconfig.build.json ./
 COPY src ./src
+COPY tests ./tests
+COPY vitest.config.ts eslint.config.js ./
 
 USER node
 EXPOSE 3051

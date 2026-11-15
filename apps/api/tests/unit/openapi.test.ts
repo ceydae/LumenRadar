@@ -1,7 +1,8 @@
-import SwaggerParser from '@apidevtools/swagger-parser';
 import { describe, expect, it } from 'vitest';
-import { createOpenApi } from './openapi.js';
-import { testConfig } from '../test/config.js';
+import SwaggerParser from '@apidevtools/swagger-parser';
+
+import { testConfig } from '../helpers/config.js';
+import { createOpenApi } from '../../src/docs/openapi.js';
 
 describe('OpenAPI', () => {
   it('is a valid specification covering every mounted auth route', async () => {

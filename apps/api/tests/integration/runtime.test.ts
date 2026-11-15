@@ -1,7 +1,8 @@
-import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
+import { execFile } from 'node:child_process';
 import { describe, expect, it } from 'vitest';
-import { testConfig } from './test/config.js';
+
+import { testConfig } from '../helpers/config.js';
 
 const run = promisify(execFile);
 
