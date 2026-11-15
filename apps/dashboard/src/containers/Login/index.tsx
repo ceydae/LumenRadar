@@ -3,21 +3,14 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import Brand from "@/components/Brand";
 import SessionLoading from "@/components/SessionLoading";
 import LoginForm from "@/containers/LoginForm";
-import SignupForm from "@/containers/SignupForm";
-import { useLocalSession } from "@/hooks/useLocalSession";
+import { useSession } from "@/hooks/useSession";
 
-export default function Login({
-  mode = "login",
-}: {
-  mode?: "login" | "signup";
-}) {
-  const signup = mode === "signup";
+export default function Login({ callbackError = false }: { callbackError?: boolean }) {
   const router = useRouter();
-  const { status } = useLocalSession();
+  const { status, error, retry } = useSession();
   useEffect(() => {
     if (status === "authenticated") router.replace("/");
   }, [status, router]);
@@ -32,27 +25,16 @@ export default function Login({
         <div className="login-content">
           <div className="login-heading">
             <h1 id="login-title">
-              {signup ? "Start with your account." : "Welcome back."}
+              Your workspace starts here.
             </h1>
             <p>
-              {signup
-                ? "A workspace for your project starts here."
-                : "Sign in to your Lumen Radar workspace."}
+              Continue with Discord to access Lumen Radar.
             </p>
           </div>
-          {signup ? <SignupForm /> : <LoginForm />}
-          <div className="login-help">
-            {signup ? (
-              <>
-                Already have an account? <Link href="/login">Sign in</Link>
-              </>
-            ) : (
-              <>
-                New to Lumen Radar?{" "}
-                <Link href="/signup">Create an account</Link>
-              </>
-            )}
-          </div>
+          {callbackError && <p className="form-error" role="alert">Discord sign-in wasn’t completed. Please try again.</p>}
+          {error && <p className="form-error" role="alert">{error} <button type="button" className="session-retry" onClick={() => void retry()}>Retry</button></p>}
+          <LoginForm />
+          <p className="login-help">New here? Your account is created when you first continue with Discord.</p>
         </div>
         <footer className="login-footer">
           <span>© {new Date().getFullYear()} Lumen Radar</span>

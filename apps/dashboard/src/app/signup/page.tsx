@@ -1,7 +1,5 @@
-import type { Metadata } from "next";
-import Login from "@/containers/Login";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = { title: "Create account · Lumen Radar" };
 export default function SignupPage() {
-  return <Login mode="signup" />;
+  redirect("/login");
 }
