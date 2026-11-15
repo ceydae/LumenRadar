@@ -1,4 +1,9 @@
 {
-  "name": "Docs",
-  "description": "LumenRadar documentation"
+  "title": "Documentation",
+  "pages": [
+    "index",
+    "getting-started",
+    "project-overview",
+    "data-sources"
+  ]
 }

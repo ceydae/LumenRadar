@@ -1,11 +1,11 @@
-FROM node:22.13.1-alpine AS base
+FROM node:22-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
 WORKDIR /app
 
-COPY package.json package-lock.json* ./
-RUN npm ci --legacy-peer-deps
+COPY package.json package-lock.json* source.config.ts next.config.mjs ./
+RUN --mount=type=cache,target=/root/.npm npm ci --no-audit --no-fund
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -13,6 +13,9 @@ WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+ARG NEXT_PUBLIC_DASHBOARD_URL=http://127.0.0.1:3051
+ENV NEXT_PUBLIC_DASHBOARD_URL=$NEXT_PUBLIC_DASHBOARD_URL
 
 RUN npm run build
 

@@ -5,6 +5,8 @@ services:
     build:
       context: ./apps/docs
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL:-http://127.0.0.1:3051}
     container_name: lumen-radar-docs
     ports:
       - "3053:3053"
@@ -12,9 +14,6 @@ services:
       - NODE_ENV=production
       - PORT=3053
       - HOSTNAME=0.0.0.0
-      # Cross-app links — override with real URLs in production
-      - NEXT_PUBLIC_LANDING_URL=http://127.0.0.1:3050
-      - NEXT_PUBLIC_DASHBOARD_URL=http://127.0.0.1:3051
     restart: unless-stopped
     networks:
       - lumen-radar
