@@ -18,6 +18,8 @@ export function createAuth(config: Config, database: Pool) {
       discord: {
         clientId: config.DISCORD_CLIENT_ID,
         clientSecret: config.DISCORD_CLIENT_SECRET,
+        disableDefaultScope: true,
+        scope: ['identify', 'email', 'guilds.members.read'],
         prompt: 'consent',
       },
     } : {},
