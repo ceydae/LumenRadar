@@ -1,0 +1,386 @@
+@import "tailwindcss";
+
+/* Lumen Radar brand fonts */
+@import "@fontsource-variable/plus-jakarta-sans";
+
+/* =============================================
+   DESIGN TOKENS
+   ============================================= */
+
+@theme {
+  --font-sans: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, sans-serif;
+
+  /* Lumen Radar brand palette */
+  --color-navy-950: #04102a;
+  --color-navy-900: #071a3d;
+  --color-navy-800: #0b2757;
+  --color-navy-700: #123370;
+  --color-navy-600: #1a3e85;
+  --color-navy-500: #1e4a9e;
+
+  --color-blue-700: #1c3a7c;
+  --color-blue-600: #244a97;
+  --color-blue-500: #3563c4;
+  --color-blue-400: #5b85de;
+  --color-blue-300: #9dbbf5;
+  --color-blue-200: #c9dbfb;
+  --color-blue-100: #dce8fa;
+
+  --color-ice-50: #f4f8fe;
+  --color-ice-100: #e8f0fc;
+  --color-ice-200: #d7e5f9;
+
+  --color-signal-400: #3fd6c9;
+  --color-signal-500: #17b8ab;
+
+  --color-amber-flag: #f5b544;
+
+  --color-foreground: #142b4d;
+  --color-muted: #65758a;
+  --color-success: #267058;
+  --color-success-bg: #edf7f2;
+
+  /* Fumadocs semantic aliases via CSS custom properties */
+  --radius: 0.625rem;
+}
+
+/* =============================================
+   LIGHT THEME — CSS Custom Properties
+   ============================================= */
+:root {
+  /* Surfaces */
+  --background: #f4f8fe;
+  --foreground: #0b2757;
+  --surface: #ffffff;
+  --muted: #65758a;
+
+  /* Accent */
+  --primary: #0b2757;
+  --primary-foreground: #ffffff;
+  --secondary: #e8f0fc;
+  --secondary-foreground: #0b2757;
+  --accent: #e8f0fc;
+  --accent-foreground: #0b2757;
+  --destructive: #a13232;
+
+  /* Borders */
+  --border: #e2e8f0;
+  --input: #cdd7e4;
+  --ring: #244a97;
+
+  /* Charts */
+  --chart-1: #244a97;
+  --chart-2: #3563c4;
+  --chart-3: #5b85de;
+  --chart-4: #17b8ab;
+  --chart-5: #65758a;
+
+  /* Sidebar — light */
+  --sidebar: #f4f8fe;
+  --sidebar-foreground: #0b2757;
+  --sidebar-primary: #0b2757;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e8f0fc;
+  --sidebar-accent-foreground: #0b2757;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #244a97;
+}
+
+/* =============================================
+   DARK THEME
+   ============================================= */
+.dark {
+  --background: #0a0f1c;
+  --foreground: #e8f0fc;
+  --surface: #111827;
+  --muted: #9aafce;
+
+  --primary: #e8f0fc;
+  --primary-foreground: #0b2757;
+  --secondary: #1a2340;
+  --secondary-foreground: #e8f0fc;
+  --accent: #1a2340;
+  --accent-foreground: #e8f0fc;
+  --destructive: #f87171;
+
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #3563c4;
+
+  --chart-1: #3563c4;
+  --chart-2: #5b85de;
+  --chart-3: #9dbbf5;
+  --chart-4: #3fd6c9;
+  --chart-5: #9aafce;
+
+  /* Sidebar — dark */
+  --sidebar: #0a0f1c;
+  --sidebar-foreground: #d0dcee;
+  --sidebar-primary: #244a97;
+  --sidebar-primary-foreground: #e8f0fc;
+  --sidebar-accent: #142040;
+  --sidebar-accent-foreground: #d0dcee;
+  --sidebar-border: #1a2340;
+  --sidebar-ring: #3563c4;
+}
+
+/* =============================================
+   BASE STYLES
+   ============================================= */
+* {
+  border-color: var(--border);
+}
+
+html {
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+::selection {
+  background: var(--color-blue-300);
+  color: var(--color-navy-900);
+}
+
+/* =============================================
+   FUMADOCS THEME OVERRIDES
+   ============================================= */
+
+/* Search dialog / input */
+.fd-search,
+[data-fd-search] {
+  --fd-background: var(--surface);
+  --fd-foreground: var(--foreground);
+}
+
+/* Code blocks */
+pre,
+code {
+  font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  font-size: 0.875em;
+}
+
+/* Selection */
+::selection {
+  background: var(--color-blue-300);
+  color: var(--color-navy-900);
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Links */
+a {
+  color: var(--color-blue-600);
+  text-underline-offset: 4px;
+}
+
+.dark a {
+  color: var(--color-blue-400);
+}
+
+/* =============================================
+   CUSTOM DOCS SHELL
+   ============================================= */
+
+/* Top nav — LumenRadar brand strip */
+.docs-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+}
+
+.docs-nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--foreground);
+}
+
+.docs-nav-brand svg {
+  flex-shrink: 0;
+}
+
+.docs-nav-brand span {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.docs-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.docs-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  transition: background 150ms, color 150ms;
+}
+
+.docs-nav-link:hover {
+  background: var(--accent);
+  color: var(--foreground);
+}
+
+.docs-nav-link svg {
+  width: 15px;
+  height: 15px;
+}
+
+.docs-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Mobile nav */
+.docs-mobile-nav {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms;
+}
+
+.docs-mobile-nav[data-open="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.docs-mobile-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(320px, 85vw);
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  padding: 20px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.docs-mobile-nav[data-open="true"] .docs-mobile-panel {
+  transform: translateX(0);
+}
+
+/* Empty state */
+.docs-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 64px 24px;
+  gap: 12px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.docs-empty-state-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--accent);
+  color: var(--color-blue-600);
+  margin-bottom: 8px;
+}
+
+.dark .docs-empty-state-icon {
+  color: var(--color-blue-400);
+}
+
+.docs-empty-state h2 {
+  font-size: 18px;
+  font-weight: 650;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.docs-empty-state p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Main content area */
+.docs-main {
+  min-height: calc(100dvh - 56px);
+}
+
+/* Reading area */
+.docs-content {
+  max-width: 780px;
+  padding: 48px 32px 80px;
+  margin: 0 auto;
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 768px) {
+  .docs-nav {
+    padding-inline: 16px;
+    height: 52px;
+  }
+
+  .docs-nav-links {
+    display: none;
+  }
+
+  .docs-content {
+    padding: 32px 20px 60px;
+  }
+}
+
+/* =============================================
+   REDUCED MOTION
+   ============================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
