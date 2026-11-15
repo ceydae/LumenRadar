@@ -8,9 +8,11 @@ describe('OpenAPI', () => {
   it('is a valid specification covering every mounted auth route', async () => {
     const spec = createOpenApi(testConfig);
     await expect(SwaggerParser.validate(structuredClone(spec))).resolves.toBeDefined();
-    expect(Object.keys(spec.paths)).toHaveLength(6);
+    expect(Object.keys(spec.paths)).toHaveLength(8);
     expect(spec.info.title).toBe('Lumen Radar API');
     expect(spec.paths['/api/auth/sign-in/social']?.post).toBeDefined();
+    expect(spec.paths['/api/projects']?.post).toBeDefined();
+    expect(spec.paths['/api/projects/{id}']?.patch).toBeDefined();
   });
 
   it('uses the production cookie name', () => {

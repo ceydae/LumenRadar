@@ -6,6 +6,7 @@ import { createAuth } from '../../src/auth/auth.js';
 import { createPool } from '../../src/database/pool.js';
 import { closeTestDatabase } from './closeTestDatabase.js';
 import type { TestDatabase } from '../../src/types/tests/testDatabase.js';
+import { migrateProjects } from '../../src/database/migrations/migrateProjects.js';
 
 export const createTestDatabase = async (): Promise<TestDatabase> => {
   const connectionString = process.env.TEST_DATABASE_URL || process.env.DATABASE_URL;
@@ -34,6 +35,7 @@ export const createTestDatabase = async (): Promise<TestDatabase> => {
     const { runMigrations } = await getMigrations(auth.options);
 
     await runMigrations();
+    await migrateProjects(pool);
 
     return { pool, auth, close };
   } catch (error) {

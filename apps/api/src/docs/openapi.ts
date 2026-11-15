@@ -1,26 +1,28 @@
 import type { OpenAPIV3 } from 'openapi-types';
-import type { Config } from '../config.js';
 
-const json = (schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject) => ({
-  'application/json': { schema },
-});
-const error = (description: string): OpenAPIV3.ResponseObject => ({
-  description,
-  content: json({ $ref: '#/components/schemas/Error' }),
-});
+import { json } from './jsonContent.js';
+import type { Config } from '../config.js';
+import { error } from './errorResponse.js';
+import { projectPaths } from './projects/paths.js';
+import { projectSchemas } from './projects/schemas.js';
+
 const sessionSecurity = [{ sessionCookie: [] }];
 
-export function createOpenApi(config: Config): OpenAPIV3.Document {
+export const createOpenApi = (config: Config): OpenAPIV3.Document => {
   return {
     openapi: '3.0.3',
     info: {
       title: 'Lumen Radar API',
       version: '0.1.0',
-      description: 'Discord login for Lumen Radar. Sign in, keep the session cookie, then request a seven-day JWT.',
+      description: 'Discord login and project management for Lumen Radar. Project routes require the login session cookie. Each user can create up to 5 web projects.',
     },
     servers: [{ url: config.BETTER_AUTH_URL }],
-    tags: [{ name: 'Auth', description: 'Discord login and session management.' }],
+    tags: [
+      { name: 'Auth', description: 'Discord login and session management.' },
+      { name: 'Projects', description: 'Manage your own projects. Web mode only for this release.' },
+    ],
     paths: {
+      ...projectPaths,
       '/api/auth/sign-in/social': {
         post: {
           tags: ['Auth'],
@@ -157,6 +159,7 @@ export function createOpenApi(config: Config): OpenAPIV3.Document {
         },
       },
       schemas: {
+        ...projectSchemas,
         Error: {
           type: 'object', required: ['message'],
           properties: { code: { type: 'string' }, message: { type: 'string' } },
@@ -181,4 +184,4 @@ export function createOpenApi(config: Config): OpenAPIV3.Document {
       },
     },
   };
-}
+};

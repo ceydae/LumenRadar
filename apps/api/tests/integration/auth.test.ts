@@ -17,7 +17,7 @@ describe('Discord authentication with PostgreSQL', () => {
   let app: ReturnType<typeof createApp>;
   beforeAll(async () => {
     database = await createTestDatabase();
-    app = createApp(testConfig, database.auth);
+    app = createApp(testConfig, database.auth, database.pool);
   });
   afterEach(() => { vi.unstubAllGlobals(); });
   afterAll(async () => { await database?.close(); });
@@ -123,7 +123,7 @@ describe('Discord authentication with PostgreSQL', () => {
 
   it('returns a clear error while Discord credentials are missing', async () => {
     const config = { ...testConfig, DISCORD_CLIENT_ID: '', DISCORD_CLIENT_SECRET: '' };
-    const localApp = createApp(config, createAuth(config, database.pool));
+    const localApp = createApp(config, createAuth(config, database.pool), database.pool);
     const result = await request(localApp).post('/api/auth/sign-in/social').send({ provider: 'discord' });
     expect(result.status).toBe(503);
     expect(result.body.code).toBe('DISCORD_NOT_CONFIGURED');
@@ -185,7 +185,7 @@ describe('Discord authentication with PostgreSQL', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const pool = createPool('postgresql://postgres:postgres@127.0.0.1:1/missing');
     try {
-      const brokenApp = createApp(testConfig, createAuth(testConfig, pool));
+      const brokenApp = createApp(testConfig, createAuth(testConfig, pool), pool);
       const result = await request(brokenApp).get('/api/auth/jwks');
       expect(result.status).toBe(500);
       expect(result.body).toEqual({ code: 'INTERNAL_ERROR', message: 'Something went wrong. Try again.' });
@@ -195,7 +195,7 @@ describe('Discord authentication with PostgreSQL', () => {
   });
 
   it('rate limits repeated login attempts', async () => {
-    const limited = createApp(testConfig, createAuth(testConfig, database.pool));
+    const limited = createApp(testConfig, createAuth(testConfig, database.pool), database.pool);
     for (let attempt = 0; attempt < 3; attempt++) {
       await request(limited).post('/api/auth/sign-in/social')
         .send({ provider: 'discord', callbackURL: testConfig.CLIENT_ORIGIN }).expect(200);
