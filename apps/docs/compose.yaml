@@ -1,0 +1,12 @@
+services:
+  docs:
+    build:
+      context: .
+      target: runtime
+      args:
+        NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL:-http://127.0.0.1:3052}
+    init: true
+    restart: always
+    ports:
+      - "127.0.0.1:3053:3053"
+    stop_grace_period: 15s

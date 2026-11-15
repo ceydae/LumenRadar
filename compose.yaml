@@ -10,3 +10,6 @@ include:
   - path:
       - ./apps/dashboard/compose.yaml
       - ./apps/dashboard/compose.dev.yaml
+  - path:
+      - ./apps/docs/compose.yaml
+      - ./apps/docs/compose.dev.yaml

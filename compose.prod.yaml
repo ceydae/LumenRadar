@@ -4,3 +4,4 @@ include:
   - path: ./apps/api/compose.yaml
   - path: ./apps/landing/compose.yaml
   - path: ./apps/dashboard/compose.yaml
+  - path: ./apps/docs/compose.yaml

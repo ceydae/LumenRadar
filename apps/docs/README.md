@@ -17,7 +17,7 @@ npm run dev
 
 Docs serves at **http://127.0.0.1:3053/**. The development and start scripts
 configure port 3053 directly. `/` renders the introduction directly. Production uses https://docs.lumenradar.com/.
-Landing remains on 3050 and Dashboard on 3051.
+Landing remains on 3050 and Dashboard on 3052.
 
 ```sh
 npm run build
@@ -27,23 +27,21 @@ npm run lint
 ```
 
 Copy `.env.example` to `.env.local` to customize `NEXT_PUBLIC_DASHBOARD_URL`.
-It defaults to `http://127.0.0.1:3051` and is read at build time. The header's
+It defaults to `http://127.0.0.1:3052` and is read at build time. The header's
 only product navigation link is Dashboard, on both desktop and mobile.
 
 ## Docker
 
-From the repository root, explicitly select the existing docs Compose file
-(the separate `compose.yaml` manages the other apps):
+From the repository root, start the complete development stack:
 
 ```sh
-docker compose -f docker-compose.yml build docs
-docker compose -f docker-compose.yml up -d docs
-docker compose -f docker-compose.yml stop docs
+docker compose up
 ```
 
-Set `NEXT_PUBLIC_DASHBOARD_URL` in the shell or root `.env` before building
-to override the public Dashboard link. Compose forwards it as a build argument.
-The container binds to `0.0.0.0:3053` and publishes host port **3053**.
+For production, use `docker compose -f compose.prod.yaml up -d --build`.
+Set `NEXT_PUBLIC_DASHBOARD_URL` before building to override the public Dashboard
+link. The docs container binds to `0.0.0.0:3053`, while Compose publishes host
+port **3053** on `127.0.0.1`.
 The builder compiles `content/docs`; the standalone server includes those
 routes and search. The runner copies `public`, including all brand assets.
 `.source` is generated during installation/build and excluded from the build context.

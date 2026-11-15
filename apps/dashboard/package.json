@@ -3,11 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-<<<<<<< HEAD
-    "dev": "next dev --port 3051",
-=======
     "dev": "next dev --hostname 127.0.0.1 --port 3052",
->>>>>>> d7494adc4f0c699794e47bf4d27a526b7e355dac
     "build": "next build",
     "start": "next start --hostname 127.0.0.1 --port 3052",
     "lint": "eslint .",

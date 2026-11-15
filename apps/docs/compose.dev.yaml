@@ -1,0 +1,18 @@
+services:
+  docs:
+    image: lumen-radar-api-docs:dev
+    pull_policy: build
+    build:
+      target: development
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_DASHBOARD_URL: ${NEXT_PUBLIC_DASHBOARD_URL:-http://127.0.0.1:3052}
+    volumes:
+      - ./src:/app/src:ro
+      - ./content:/app/content:ro
+      - ./public:/app/public:ro
+      - ./next.config.mjs:/app/next.config.mjs:ro
+      - ./source.config.ts:/app/source.config.ts:ro
+      - ./postcss.config.mjs:/app/postcss.config.mjs:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
+      - ./eslint.config.js:/app/eslint.config.js:ro

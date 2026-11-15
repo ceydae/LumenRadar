@@ -1,42 +1,46 @@
-FROM node:22-alpine AS base
+FROM node:24-bookworm-slim AS dependencies
 
-# Install dependencies only when needed
-FROM base AS deps
 WORKDIR /app
 
 COPY package.json package-lock.json* source.config.ts next.config.mjs ./
-RUN --mount=type=cache,target=/root/.npm npm ci --no-audit --no-fund
+RUN npm ci --no-audit --no-fund
 
-# Rebuild the source code only when needed
-FROM base AS builder
-WORKDIR /app
+FROM dependencies AS development
 
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+COPY --chown=node:node . .
+RUN npm run postinstall && \
+    chown node:node /app && \
+    chown -R node:node /app/.source
 
-ARG NEXT_PUBLIC_DASHBOARD_URL=http://127.0.0.1:3051
+USER node
+EXPOSE 3053
+
+CMD ["node", "node_modules/next/dist/bin/next", "dev", "--hostname", "0.0.0.0", "--port", "3053"]
+
+FROM dependencies AS build
+
+ENV NEXT_TELEMETRY_DISABLED=1
+ARG NEXT_PUBLIC_DASHBOARD_URL=http://127.0.0.1:3052
 ENV NEXT_PUBLIC_DASHBOARD_URL=$NEXT_PUBLIC_DASHBOARD_URL
+COPY . .
 
 RUN npm run build
 
-# Production image, copy all the files and run next
-FROM base AS runner
-WORKDIR /app
+FROM node:24-bookworm-slim AS runtime
 
 ENV NODE_ENV=production
-
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-
-USER nextjs
-
-EXPOSE 3053
-
+ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3053
 ENV HOSTNAME=0.0.0.0
+WORKDIR /app
+
+COPY --from=build --chown=node:node /app/.next/standalone ./
+COPY --from=build --chown=node:node /app/.next/static ./.next/static
+COPY --from=build --chown=node:node /app/public ./public
+
+USER node
+EXPOSE 3053
 
 CMD ["node", "server.js"]
