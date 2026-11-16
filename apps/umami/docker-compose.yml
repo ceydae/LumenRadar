@@ -9,7 +9,7 @@ services:
     environment:
       APP_SECRET: ${UMAMI_APP_SECRET:?Set UMAMI_APP_SECRET in the API .env}
       TWO_FACTOR_ENCRYPTION_KEY: ${UMAMI_TWO_FACTOR_ENCRYPTION_KEY:-}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-lumen_radar}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/umami
+      DATABASE_URL: postgresql://${POSTGRES_USER:-lumen_radar}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:${POSTGRES_PORT:-5431}/umami
     ports:
       - '127.0.0.1:${UMAMI_PORT:-3054}:3000'
     depends_on:
@@ -30,6 +30,7 @@ services:
         condition: service_healthy
     environment:
       PGHOST: postgres
+      PGPORT: ${POSTGRES_PORT:-5431}
       PGDATABASE: postgres
       PGUSER: ${POSTGRES_USER:-lumen_radar}
       PGPASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
