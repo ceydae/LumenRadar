@@ -57,6 +57,20 @@ redirect to the project. `/onboarding` redirects to the new project route.
 The client unwraps `{ projects }` and `{ project }` responses and maps API fields
 to its interface model.
 
+The project route reads GET `/api/projects/:id` using the API UUID. The route
+keeps the selected project stable when the list refreshes or the page reloads.
+Edit project reuses the details form in an Animate UI Dialog and saves through
+PATCH `/api/projects/:id`. Delete project asks for confirmation in an Animate UI AlertDialog,
+handles the empty 204 response, and returns to the project list after deletion.
+These controls use the existing styles and do not add another navigation route.
+The installation panel keeps its layout while settings are open; dialogs trap
+focus, return it to their trigger on close, and respect reduced motion. Pending
+requests keep the relevant dialog open, and failures leave the form available to retry.
+Project errors retain the API status, code, and message. A 401 clears the current
+session and project cache and returns the user to Discord sign-in. Sign-out also
+clears cached projects; late responses cannot restore them. A project-limit
+response refreshes the list so projects created in another tab are reflected.
+
 `/projects/:id` opens that project's installation page. For the MVP, the overview
 charts, metrics, connection dialog, and date filter are commented out in Dashboard
 and Header. The page shows a brand banner, the installation panel, and an expandable

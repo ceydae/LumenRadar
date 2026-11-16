@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { LogOut } from "lucide-react";
 import Brand from "@/components/Brand";
+import ThemeToggle from "@/components/ThemeToggle";
 import { signOut } from "@/lib/session";
 
 export default function AccountHeader({ name }: { name: string }) {
@@ -15,8 +16,9 @@ export default function AccountHeader({ name }: { name: string }) {
   }
   return (
     <header className="setup-header">
-      <Brand tone="light" />
+      <Brand />
       <div className="setup-account">
+        <ThemeToggle />
         {error && <p className="form-error" role="alert">{error}</p>}
         <span>{name}</span>
         <button type="button" className="icon-button" aria-label="Sign out" disabled={pending} onClick={handleSignOut}>

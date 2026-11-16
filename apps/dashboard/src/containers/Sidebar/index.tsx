@@ -8,6 +8,7 @@ import { navigation } from "@/constants/navigation";
 import Link from "next/link";
 import { cn } from "@/utils/cn";
 import Brand from "@/components/Brand";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Sidebar({
   collapsed,
@@ -58,6 +59,7 @@ export default function Sidebar({
         </ul>
       </nav>
       <div className="sidebar-bottom">
+        <ThemeToggle showLabel />
         <a
           className="resource-link"
           aria-label="SCF program handbook (opens in a new tab)"

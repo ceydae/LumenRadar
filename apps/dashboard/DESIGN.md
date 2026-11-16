@@ -4,24 +4,24 @@ description: A clear operating workspace for web and API analytics.
 colors:
   lumen-navy: "#0b2757"
   lumen-blue: "#244a97"
-  background: "#f6f8fb"
+  background: "#ffffff"
   surface: "#ffffff"
-  foreground: "#142b4d"
-  muted: "#65758a"
-  accent: "#edf2fa"
-  border: "#e2e8f0"
+  foreground: "#0b2757"
+  muted: "#4c629a"
+  accent: "#e8f0fc"
+  border: "#d7e5f9"
   chart-fill: "#244a9708"
   success: "#267058"
   success-background: "#edf7f2"
 typography:
   headline:
-    fontFamily: "Plus Jakarta Sans Variable, sans-serif"
+    fontFamily: "Space Grotesk Variable, Plus Jakarta Sans Variable, sans-serif"
     fontSize: "clamp(25px, 2.2vw, 32px)"
     fontWeight: 650
     lineHeight: 1.3
     letterSpacing: "-0.035em"
   title:
-    fontFamily: "Plus Jakarta Sans Variable, sans-serif"
+    fontFamily: "Space Grotesk Variable, Plus Jakarta Sans Variable, sans-serif"
     fontSize: "13px"
     fontWeight: 650
     letterSpacing: "-0.02em"
@@ -74,7 +74,7 @@ components:
 
 ## Overview
 
-Lumen Radar is an operating workspace: a navy navigation anchor beside a bright,
+Lumen Radar is an operating workspace: documentation-colored navigation beside a bright,
 neutral report surface. Compact measurements and connection coverage support
 repeated inspection. The supplied brand kit is the authority for the original
 stepped-L symbol, white wordmark, navy and blue.
@@ -95,7 +95,11 @@ the translucent chart-fill token as a solid area fill.
 
 ## Typography
 
-Use Plus Jakarta Sans Variable throughout, bundled locally through Fontsource.
+Match the landing page typography: Space Grotesk Variable for headings (h1–h3),
+and Plus Jakarta Sans Variable for body text, navigation, forms, controls and data.
+Both families are bundled locally through Fontsource, with the same fallback
+stacks as the landing page. Use `--font-display` for heading roles and
+`--font-sans` for interface text.
 Headlines and metric values use tight tracking; titles use restrained semibold
 weight. Supporting text is compact, generally (9–12px). Use tabular numerals for
 measurements, shares and table values. At narrow widths the page headline is
@@ -134,8 +138,8 @@ whitespace only, with brand source files retained intact.
 - **Buttons and selectors:** compact navy primary actions and bordered white
   secondary actions. Primary hover changes to blue; secondary hover uses a pale
   surface and stronger border. Selectors retain native semantics.
-- **Navigation:** white active text, translucent active surface and a small active
-  marker on navy. Upcoming pages are disabled and marked Soon. Icon navigation
+- **Navigation:** pale blue navigation in light mode and deep navy in dark mode,
+  with primary-colored active text and an accent selection surface. Upcoming pages are disabled and marked Soon. Icon navigation
   retains accessible names.
 - **Panels and metrics:** white bordered panels with compact headings; the metric
   strip uses internal dividers rather than separate floating cards.
@@ -160,10 +164,26 @@ whitespace only, with brand source files retained intact.
 
 ## Account entry
 
-The `/login` route uses the existing navy/white palette and locally bundled Plus
-Jakarta Sans. The white form surface and navy brand panel split the desktop view;
+The `/login` route uses the existing navy/white palette and the shared locally
+bundled Space Grotesk / Plus Jakarta Sans typography pairing. The white form surface and navy brand panel split the desktop view;
 below 760px only the form surface remains. Brand artwork uses the original assets.
 Inputs have visible labels, browser validation, a password visibility control and
 clear focus states. Pages render containers; LoginForm owns form composition and
 InputField remains reusable. Only email is persisted for the local flow, never the
 password. Session logic is isolated from presentation for later server integration.
+
+
+## Documentation theme parity
+
+The dashboard uses the exact semantic palette in `../docs/src/app/globals.css`.
+Light mode uses white (#ffffff), muted surfaces (#f4f8fe), navy ink (#0b2757),
+secondary ink (#4c629a), blue actions (#244a97), accent (#e8f0fc), borders
+(#d7e5f9), and focus rings (#3563c4). Dark mode uses canvas (#04102a),
+surfaces (#071a3d), ink (#e8f0fc), muted ink (#9dbbf5), turquoise actions
+and focus (#3fd6c9), navy accent (#0b2757), and borders (#123370).
+
+The theme defaults to the system preference and persists explicit selection under
+`lumen-radar-dashboard-theme`. Appearance controls are available on login, in the
+account header, and in the sidebar, including its collapsed and mobile forms.
+Brand assets switch from navy to white in dark mode. Fixed navy artwork panels
+keep white artwork and text in both modes.

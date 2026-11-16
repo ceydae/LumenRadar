@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Brand from "@/components/Brand";
+import ThemeToggle from "@/components/ThemeToggle";
 import SessionLoading from "@/components/SessionLoading";
 import LoginForm from "@/containers/LoginForm";
 import { useSession } from "@/hooks/useSession";
@@ -20,7 +21,8 @@ export default function Login({ callbackError = false }: { callbackError?: boole
     <main className="login-page">
       <section className="login-main" aria-labelledby="login-title">
         <header className="login-header">
-          <Brand tone="light" href="/login" />
+          <Brand href="/login" />
+          <ThemeToggle />
         </header>
         <div className="login-content">
           <div className="login-heading">
