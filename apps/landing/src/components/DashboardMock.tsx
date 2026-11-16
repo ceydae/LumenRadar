@@ -59,7 +59,7 @@ export default function DashboardMock() {
         </div>
         <div className="mx-auto flex w-full max-w-xs items-center justify-center gap-1.5 rounded-md bg-white px-3 py-1 text-[11px] font-medium text-navy-800/60 ring-1 ring-ice-200">
           <Activity className="h-3 w-3 text-signal-500" />
-          radar.lumenradar.io/demo
+          dashboard.lumenradar.org
         </div>
         <div className="hidden w-10 sm:block" />
       </div>
@@ -84,7 +84,7 @@ export default function DashboardMock() {
           ))}
           <div className="mt-auto rounded-lg border border-white/10 bg-white/5 p-2.5">
             <p className="text-[10px] font-semibold tracking-wider text-signal-400 uppercase">Project</p>
-            <p className="mt-0.5 truncate text-[12px] font-medium text-white">stellar-demo</p>
+            <p className="mt-0.5 truncate text-[12px] font-medium text-white">Your Stellar project</p>
           </div>
         </aside>
 
@@ -92,10 +92,10 @@ export default function DashboardMock() {
         <div className="space-y-4 p-4 sm:p-5">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <h3 className="text-[15px] font-bold text-navy-900">Overview · Stellar Demo Project</h3>
-              <p className="text-[12px] text-navy-800/55">Last 12 weeks · updated just now</p>
+              <h3 className="text-[15px] font-bold text-navy-900">Web & API reporting roadmap</h3>
+              <p className="text-[12px] text-navy-800/55">Planned reports for your project</p>
             </div>
-            <StatusBadge tone="sample">Sample data</StatusBadge>
+            <StatusBadge tone="planned">Planned reporting</StatusBadge>
           </div>
 
           {/* KPI cards */}

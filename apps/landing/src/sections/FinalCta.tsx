@@ -1,8 +1,9 @@
-import { Play } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import StarBorder from '../components/StarBorder';
 import ShinyText from '../components/ShinyText';
 import SplitText from '../components/SplitText';
 import FadeContent from '../components/FadeContent';
+import { links } from '../lib/links';
 
 export default function FinalCta() {
   return (
@@ -30,11 +31,12 @@ export default function FinalCta() {
               className="max-w-xl font-display text-3xl font-bold tracking-tight text-balance text-white sm:text-5xl"
             />
             <p className="mt-4 max-w-lg text-[15.5px] leading-relaxed text-blue-200/80">
-              Take the demo dashboard for a spin and picture your own project’s numbers in it. Web and API usage, one
-              clear view, zero guesswork.
+              Sign in with Discord, register your Stellar project, and add the tracking script to start measuring
+              website activity in your private dashboard.
             </p>
-            <a href="#demo" className="mt-8 inline-block" aria-label="Explore the demo dashboard">
               <StarBorder
+                as="a"
+                href={links.dashboard}
                 color="#3fd6c9"
                 trailColor="#5b85de"
                 backgroundColor="#0b2757"
@@ -43,16 +45,15 @@ export default function FinalCta() {
                 thickness={2}
                 duration={4}
                 glow={0.9}
-                className="cursor-pointer"
+                className="mt-8 cursor-pointer"
               >
                 <span className="flex items-center gap-2 px-3 py-1 text-[15px] font-bold">
-                  <Play className="h-4 w-4 fill-current" />
-                  Explore demo
+                  Get started
+                  <ArrowUpRight className="h-4 w-4" />
                 </span>
               </StarBorder>
-            </a>
             <ShinyText
-              text="Sample data · no signup required"
+              text="Free to use · Open source under the MIT license"
               color="#9dbbf5"
               shineColor="#ffffff"
               speed={3.5}

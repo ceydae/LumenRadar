@@ -2,6 +2,7 @@ import { ArrowUpRight, GitBranch, Minimize2, ShieldCheck } from 'lucide-react';
 import SectionHeading from '../components/SectionHeading';
 import SpotlightCard from '../components/SpotlightCard';
 import FadeContent from '../components/FadeContent';
+import { links } from '../lib/links';
 
 const pillars = [
   {
@@ -12,19 +13,19 @@ const pillars = [
   {
     icon: ShieldCheck,
     title: 'Isolated project access',
-    copy: 'Your project’s data is visible only to the people you invite. Access is scoped per project, never pooled across teams.',
+    copy: 'Your project’s dashboard is private to your account. Reviewer access and team permissions are planned as separate, explicit access controls.',
   },
   {
     icon: GitBranch,
     title: 'Open-source development',
-    copy: 'Lumen Radar is developed in the open. You can read the code, follow the roadmap, and hold us to what we ship.',
+    copy: 'Lumen Radar is free and open source under the MIT license. You can read the code, follow development, and contribute.',
   },
 ];
 
 const operatorAccess = [
-  'Aggregated, ecosystem-level metrics — never raw event streams from individual projects.',
-  'Anonymized counts that help evaluate program impact, such as adoption trends across funded projects.',
-  'Nothing that identifies your users, and no project-level detail without that project’s consent.',
+  'A cross-project view using shared metric definitions, so project adoption can be compared consistently.',
+  'Access granted by SCF admins using a reviewer’s Discord ID or email, with read-only API keys.',
+  'Usage metrics without wallet addresses or other user identifiers. Project-level detail requires that project’s consent.',
 ];
 
 export default function Privacy() {
@@ -56,12 +57,12 @@ export default function Privacy() {
         </div>
 
         <FadeContent delay={0.2} duration={0.9}>
-          <div className="mt-8 grid gap-6 overflow-hidden rounded-2xl border border-blue-200 bg-gradient-to-br from-white to-ice-100 p-7 shadow-lift sm:p-9 lg:grid-cols-[1.2fr_1fr]">
+          <div id="data-access" className="mt-8 grid gap-6 overflow-hidden rounded-2xl border border-blue-200 bg-gradient-to-br from-white to-ice-100 p-7 shadow-lift sm:p-9 lg:grid-cols-[1.2fr_1fr]">
             <div>
-              <h3 className="font-display text-xl font-bold text-navy-900">What designated SCF operators can access</h3>
+              <h3 className="font-display text-xl font-bold text-navy-900">Planned access for SCF reviewers</h3>
               <p className="mt-2 text-[14.5px] leading-relaxed text-navy-800/65">
-                Lumen Radar is developed with support from the Stellar Community Fund. To keep that relationship
-                transparent, here is exactly what designated SCF operators will be able to see:
+                Teams need a private view of their own usage. SCF reviewers need consistent metrics across projects.
+                We’re building a separate reviewer view around these requirements:
               </p>
               <ul className="mt-4 space-y-2.5">
                 {operatorAccess.map((item) => (
@@ -73,26 +74,27 @@ export default function Privacy() {
               </ul>
               <div className="mt-5 flex flex-wrap gap-4">
                 <a
-                  href="/docs/privacy"
+                  href={links.docs}
                   className="group inline-flex items-center gap-1 text-[14px] font-bold text-blue-600 hover:text-blue-700"
                 >
-                  Privacy documentation
+                  Read documentation
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
                 <a
-                  href="/docs/data-access"
+                  href={`${links.docs}/website-tracking`}
                   className="group inline-flex items-center gap-1 text-[14px] font-bold text-blue-600 hover:text-blue-700"
                 >
-                  Data access policy
+                  Website tracking
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
               </div>
             </div>
             <div className="flex flex-col justify-center rounded-xl border border-amber-flag/40 bg-amber-flag/10 p-6">
-              <p className="text-[12px] font-extrabold tracking-[0.14em] text-[#8a5d0b] uppercase">A note on claims</p>
+              <p className="text-[12px] font-extrabold tracking-[0.14em] text-[#8a5d0b] uppercase">Privacy roadmap</p>
               <p className="mt-2 text-[14px] leading-relaxed text-navy-800/75">
-                We publish compliance claims and operational guarantees only once they’ve been verified. Until then,
-                this page describes what we’re building toward — not certifications we hold.
+                A planned filter will remove emails, wallet addresses, secret keys, tokens, and transaction hashes
+                before storage. Optional Blux and Stellar Wallets Kit integrations will count logins and wallet
+                connections without collecting addresses.
               </p>
             </div>
           </div>

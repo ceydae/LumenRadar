@@ -1,20 +1,21 @@
 import GithubIcon from '../components/GithubIcon';
+import { links } from '../lib/links';
 
 const columns = [
   {
     title: 'Product',
     links: [
-      { label: 'Documentation', href: '/docs' },
-      { label: 'Demo dashboard', href: '#demo' },
-      { label: 'Development status', href: '/status' },
+      { label: 'Documentation', href: links.docs },
+      { label: 'Dashboard', href: links.dashboard },
+      { label: 'Getting started', href: `${links.docs}/getting-started` },
     ],
   },
   {
     title: 'Resources',
     links: [
-      { label: 'GitHub', href: 'https://github.com/lumen-radar' },
-      { label: 'Privacy', href: '/docs/privacy' },
-      { label: 'Data access policy', href: '/docs/data-access' },
+      { label: 'Website tracking', href: `${links.docs}/website-tracking` },
+      { label: 'Privacy', href: '#privacy' },
+      { label: 'SCF reviewer access', href: '#data-access' },
     ],
   },
 ];
@@ -27,10 +28,10 @@ export default function Footer() {
           <div>
             <img src="/brand/logo-white.svg" alt="Lumen Radar" className="h-7 w-auto" />
             <p className="mt-4 max-w-xs text-[13.5px] leading-relaxed text-blue-200/60">
-              Web and API analytics for projects in the Stellar ecosystem. Understand how your project is used.
+              Free, open-source analytics for projects in the Stellar ecosystem. Understand how your project is used.
             </p>
             <a
-              href="https://github.com/lumen-radar"
+              href={links.github}
               target="_blank"
               rel="noreferrer"
               aria-label="Lumen Radar on GitHub"
@@ -61,7 +62,7 @@ export default function Footer() {
               <span className="absolute inline-flex h-full w-full animate-ping-soft rounded-full bg-signal-400" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-signal-400" />
             </span>
-            In active development — demo uses sample data
+            Web tracking available · API analytics planned
           </p>
         </div>
       </div>

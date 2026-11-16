@@ -1,4 +1,4 @@
-import { ArrowDown, Play } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import GridScan from '../components/GridScan';
 import SplitText from '../components/SplitText';
 import BlurText from '../components/BlurText';
@@ -6,6 +6,7 @@ import StarBorder from '../components/StarBorder';
 import ShinyText from '../components/ShinyText';
 import FadeContent from '../components/FadeContent';
 import DashboardMock from '../components/DashboardMock';
+import { links } from '../lib/links';
 
 export default function Hero() {
   return (
@@ -55,7 +56,7 @@ export default function Hero() {
 
         {/* intro */}
         <BlurText
-          text="Lumen Radar brings your website activity and API usage into one clear view — so your team can see adoption, spot trends, and keep services healthy without stitching together five tools."
+          text="Free, open-source analytics for the Stellar ecosystem. Start tracking website activity in your private dashboard, with API analytics and shared metrics for SCF reviewers on the roadmap."
           animateBy="words"
           delay={14}
           className="mt-6 max-w-2xl justify-center text-base leading-relaxed text-blue-200/85 sm:text-lg"
@@ -64,8 +65,9 @@ export default function Hero() {
         {/* actions */}
         <FadeContent delay={0.4} duration={0.9} className="mt-9 flex flex-col items-center gap-5">
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <a href="#demo" aria-label="Explore the demo dashboard">
               <StarBorder
+                as="a"
+                href={links.dashboard}
                 color="#3fd6c9"
                 trailColor="#5b85de"
                 backgroundColor="#0b2757"
@@ -77,21 +79,20 @@ export default function Hero() {
                 className="cursor-pointer"
               >
                 <span className="flex items-center gap-2 px-3 py-1 text-[15px] font-bold">
-                  <Play className="h-4 w-4 fill-current" />
-                  Explore demo
+                  Get started
+                  <ArrowUpRight className="h-4 w-4" />
                 </span>
               </StarBorder>
-            </a>
             <a
-              href="#product"
+              href={links.docs}
               className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-[14px] font-semibold text-blue-200 transition hover:border-white/35 hover:text-white"
             >
-              See how it works
-              <ArrowDown className="h-4 w-4" />
+              Read the docs
+              <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>
           <ShinyText
-            text="Demo runs on sample data · product in active development"
+            text="Free to use · Sign in with Discord"
             color="#9dbbf5"
             shineColor="#ffffff"
             speed={3.5}
@@ -99,8 +100,8 @@ export default function Hero() {
           />
         </FadeContent>
 
-        {/* dashboard preview */}
-        <FadeContent delay={0.55} duration={1.1} className="mt-14 w-full max-w-5xl" id="demo">
+        {/* reporting roadmap */}
+        <FadeContent delay={0.55} duration={1.1} className="mt-14 w-full max-w-5xl">
           <div className="relative">
             <div
               className="pointer-events-none absolute -inset-x-8 -top-8 h-40 bg-[radial-gradient(50%_100%_at_50%_0%,rgba(63,214,201,0.14),transparent)]"
@@ -108,7 +109,7 @@ export default function Hero() {
             />
             <DashboardMock />
             <p className="mt-4 text-[12.5px] text-blue-200/60">
-              Interactive preview of the Lumen Radar dashboard — every number, chart and table above is sample data.
+              Reporting roadmap · Website setup and pageview counts are available now. Advanced web reports and API analytics are planned.
             </p>
           </div>
         </FadeContent>

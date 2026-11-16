@@ -32,7 +32,7 @@ export default function Questions() {
         <SectionHeading
           eyebrow="Answers, not just charts"
           title="Ask the questions your team actually has."
-          copy="Each view in Lumen Radar is built around a practical question about adoption. Here's how the dashboard answers three of them."
+          copy="Our reporting roadmap focuses on three practical questions about adoption. These planned views will help teams understand what brings people in and what keeps them coming back."
         />
 
         <div className="mt-16 space-y-20 sm:space-y-28">

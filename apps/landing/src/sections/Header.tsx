@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import GithubIcon from '../components/GithubIcon';
+import { links as destinations } from '../lib/links';
 
 const links = [
   { label: 'Product', href: '#product' },
   { label: 'Questions', href: '#answers' },
   { label: 'Integration', href: '#integration' },
   { label: 'Privacy', href: '#privacy' },
+  { label: 'Docs', href: destinations.docs },
 ];
 
 export default function Header() {
@@ -40,7 +42,7 @@ export default function Header() {
 
         <div className="flex items-center gap-3">
           <a
-            href="https://github.com/lumen-radar"
+            href={destinations.github}
             target="_blank"
             rel="noreferrer"
             aria-label="Lumen Radar on GitHub"
@@ -49,10 +51,10 @@ export default function Header() {
             <GithubIcon className="h-5 w-5" />
           </a>
           <a
-            href="#demo"
+            href={destinations.dashboard}
             className="group inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-signal-400 px-3 py-2 sm:px-4 text-[13px] font-bold text-navy-950 transition hover:bg-signal-500 hover:text-navy-950"
           >
-            Explore demo
+            Get started
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
         </div>

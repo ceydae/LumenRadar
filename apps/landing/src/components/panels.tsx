@@ -6,7 +6,7 @@ function PanelShell({ title, children }: { title: string; children: React.ReactN
     <div className="overflow-hidden rounded-2xl border border-ice-200 bg-white shadow-card">
       <div className="flex items-center justify-between gap-2 border-b border-ice-100 px-5 py-3">
         <p className="text-[13px] font-bold text-navy-900">{title}</p>
-        <StatusBadge tone="sample">Sample data</StatusBadge>
+        <StatusBadge tone="planned">Planned</StatusBadge>
       </div>
       <div className="p-5">{children}</div>
     </div>

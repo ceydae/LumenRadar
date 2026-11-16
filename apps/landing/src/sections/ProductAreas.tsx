@@ -9,17 +9,17 @@ const areas = [
     icon: Globe,
     name: 'Web analytics',
     tagline: 'See how people find and use your site.',
-    copy: 'Understand who visits your project’s website, which pages hold their attention, and where they arrived from — with a focus on essentials, not noise.',
-    ready: ['Visitor activity and page views', 'Popular pages and content', 'Traffic sources and referrers'],
-    planned: ['Custom events and goals', 'Realtime visitor view'],
+    copy: 'Built on Umami. Start with website tracking and pageview counts, then follow the roadmap toward deeper insights into how people use your project.',
+    ready: ['Website tracking script', 'Page views with date filters', 'Private project dashboard'],
+    planned: ['Visitors, sessions and bounce rate', 'Top pages, referrers, countries and devices', 'Engagement, events and conversion funnels'],
   },
   {
     icon: Server,
     name: 'API analytics',
     tagline: 'Watch how your services are actually called.',
-    copy: 'Track request volume, response status, and latency across every endpoint, so integrators’ experience is measured — not guessed.',
-    ready: ['Request volume per endpoint', 'Response status breakdown', 'Latency percentiles over time'],
-    planned: ['Latency and error alerts', 'Per-consumer usage views'],
+    copy: 'Planned OpenTelemetry integration will measure request volume, errors, and response times by endpoint, with dynamic routes grouped together.',
+    ready: [],
+    planned: ['Request counts per endpoint', 'Error rates and response status', 'Response times at p50 and p95'],
   },
 ];
 
@@ -30,7 +30,7 @@ export default function ProductAreas() {
         <SectionHeading
           eyebrow="One radar, two signals"
           title="Web and API analytics, side by side."
-          copy="Stellar projects live on two surfaces: the site people visit and the API developers call. Lumen Radar watches both, in one place."
+          copy="Stellar projects live on two surfaces: the site people visit and the API developers call. Start with web analytics today; API analytics is next."
         />
 
         <div className="mt-14 grid gap-6 md:grid-cols-2">
@@ -45,7 +45,7 @@ export default function ProductAreas() {
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-navy-800 text-signal-400">
                     <area.icon className="h-6 w-6" />
                   </div>
-                  <StatusBadge tone="dev">In development</StatusBadge>
+                  <StatusBadge tone={area.ready.length ? 'live' : 'planned'}>{area.ready.length ? 'Available now' : 'Planned'}</StatusBadge>
                 </div>
 
                 <h3 className="mt-6 font-display text-2xl font-bold tracking-tight text-navy-900">{area.name}</h3>
@@ -62,12 +62,12 @@ export default function ProductAreas() {
                     </li>
                   ))}
                   {area.planned.map((f) => (
-                    <li key={f} className="flex items-center gap-2.5 text-[14.5px] font-medium text-navy-800/50">
+                    <li key={f} className="flex items-center gap-2.5 text-[14.5px] font-medium text-navy-800/75">
                       <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-600/10 text-blue-500">
                         <Clock3 className="h-3 w-3" strokeWidth={2.5} />
                       </span>
                       {f}
-                      <span className="ml-auto rounded-full border border-blue-300 bg-blue-600/10 px-2 py-0.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase">
+                      <span className="ml-auto shrink-0 rounded-full border border-blue-300 bg-blue-600/10 px-2 py-0.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase">
                         Planned
                       </span>
                     </li>
@@ -80,8 +80,8 @@ export default function ProductAreas() {
 
         <FadeContent delay={0.2} duration={0.8}>
           <p className="mx-auto mt-8 max-w-xl text-center text-[13.5px] text-navy-800/55">
-            Capabilities marked <span className="font-bold text-blue-700">Planned</span> are on the roadmap and not yet
-            implemented. Everything else is visible in the demo with sample data.
+            Capabilities marked <span className="font-bold text-blue-700">Planned</span> are on the roadmap.
+            Optional wallet connection counts, traffic confidence scores, and tracking health checks are also planned.
           </p>
         </FadeContent>
       </div>
