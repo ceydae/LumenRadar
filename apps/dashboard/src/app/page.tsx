@@ -1,8 +1,10 @@
 import Projects from "@/containers/Projects";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = { title: "Projects · Lumen Radar" };
 
-export default function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+  if ((await searchParams).error !== undefined) redirect("/login?error=oauth_callback");
   return <Projects />;
 }
