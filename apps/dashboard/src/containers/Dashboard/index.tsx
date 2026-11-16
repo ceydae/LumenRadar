@@ -11,7 +11,7 @@ import Header from "@/containers/Header";
 import { useSession } from "@/hooks/useSession";
 import { signOut } from "@/lib/session";
 import SessionLoading from "@/components/SessionLoading";
-import { useWorkspace } from "@/hooks/useWorkspace";
+import { useProject, useWorkspace } from "@/hooks/useWorkspace";
 import { toAnalyticsProject } from "@/utils/project";
 import ProjectLoadError from "@/components/ProjectLoadError";
 import WebsiteInstallation from "@/containers/WebsiteInstallation";
@@ -21,6 +21,7 @@ export default function Dashboard({ projectId }: { projectId: string }) {
   const router = useRouter();
   const { session, status } = useSession();
   const { workspace, loaded, error, retry } = useWorkspace(session?.id);
+  const detail = useProject(session?.id, projectId, loaded && !error);
   // const [range, setRange] = useState<DateRange>("30d");
   // const [connectionsOpen, setConnectionsOpen] = useState(false);
   const [signOutError, setSignOutError] = useState("");
@@ -38,6 +39,8 @@ export default function Dashboard({ projectId }: { projectId: string }) {
   if (!session || !loaded)
     return <SessionLoading />;
   if (error) return <ProjectLoadError error={error} onRetry={() => void retry()} />;
+  if (detail.error) return <ProjectLoadError error={detail.error} onRetry={detail.retry} />;
+  if (!detail.loaded) return <SessionLoading />;
   if (!localProject) return <ProjectLoadError error="This project doesn’t exist or isn’t available to your account." />;
   if (!localProject.connectionMode) return <SessionLoading />;
   const project = toAnalyticsProject(localProject);
@@ -68,7 +71,7 @@ export default function Dashboard({ projectId }: { projectId: string }) {
         />
         <main id="main-content" className="project-installation-page">
           <InstallationBanner domain={project.domain} />
-          <WebsiteInstallation key={project.id} project={localProject} />
+          <WebsiteInstallation key={project.id} project={localProject} accountId={session.id} onDeleted={() => router.replace("/")} />
           <InstallationGuide />
         </main>
         {/* MVP: keep the analytics overview available for the reporting release.

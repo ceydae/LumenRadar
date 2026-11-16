@@ -2,31 +2,35 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Brand({
-  tone = "dark",
+  tone = "auto",
   href = "/",
 }: {
-  tone?: "light" | "dark";
+  tone?: "light" | "dark" | "auto";
   href?: string;
 }) {
-  const color = tone === "light" ? "navy" : "white";
+  const color = tone === "dark" ? "white" : "navy";
   return (
     <Link href={href} className="brand" aria-label="Lumen Radar home">
       <Image
-        className="brand-symbol"
+        className={`brand-symbol${tone === "auto" ? " theme-light" : ""}`}
         src={`/brand/symbol-${color}.svg`}
         alt=""
-        width={26}
-        height={30}
+        width={559}
+        height={641}
         priority
       />
       <Image
-        className="brand-wordmark sidebar-label"
+        className={`brand-wordmark sidebar-label${tone === "auto" ? " theme-light" : ""}`}
         src={`/brand/wordmark-${color}.svg`}
         alt=""
-        width={146}
-        height={12}
+        width={1743}
+        height={143}
         priority
       />
+      {tone === "auto" && <>
+        <Image className="brand-symbol theme-dark" src="/brand/symbol-white.svg" alt="" width={559} height={641} priority />
+        <Image className="brand-wordmark sidebar-label theme-dark" src="/brand/wordmark-white.svg" alt="" width={1743} height={143} priority />
+      </>}
     </Link>
   );
 }

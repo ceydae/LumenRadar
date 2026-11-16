@@ -20,12 +20,18 @@ export async function authRequest(path: string, body?: object) {
   if (!response.ok) {
     if (response.status === 429) throw new Error("Too many attempts. Wait a minute and try again.");
     if (response.status === 401 && path === "get-session") return null;
+    if (response.status === 401) expireSession();
     if (response.status === 503 || response.status === 404) throw new Error("Discord sign-in is unavailable. Please try again later.");
-    throw new Error("We couldn't connect to your account. Please try again.");
+    const data = await response.json().catch(() => null);
+    throw new Error(data?.message || "We couldn't connect to your account. Please try again.");
   }
   return response.json();
 }
 function update(next: SessionState) { state = next; listeners.forEach((listener) => listener()); }
+export function expireSession() {
+  generation++;
+  update({ session: null, status: "unauthenticated", error: "Your session has expired. Sign in with Discord to continue." });
+}
 export const getSessionSnapshot = () => state;
 export const getServerSessionSnapshot = () => initialState;
 export function subscribeToSession(listener: () => void) {

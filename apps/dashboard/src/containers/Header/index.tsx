@@ -27,16 +27,16 @@ export default function Header({
   return (
     <header className="topbar project-header">
       <div className="project-header-context">
+        <ProjectSwitcher projects={projects} project={project} onProjectChange={onProjectChange} />
         <nav className="project-header-breadcrumb" aria-label="Breadcrumb">
           <Link href="/">Projects</Link>
           <ChevronRight size={13} aria-hidden="true" />
           <span aria-current="page">Website setup</span>
         </nav>
-        <ProjectSwitcher projects={projects} project={project} onProjectChange={onProjectChange} />
       </div>
       <div className="project-header-actions">
         <a className="project-website-link" href={websiteUrl} target="_blank" rel="noopener noreferrer" aria-label="Open website (opens in a new tab)">
-          Open website <ArrowUpRight size={16} aria-hidden="true" />
+          <span className="project-website-label">Open website</span> <ArrowUpRight size={16} aria-hidden="true" />
         </a>
         {/* MVP: date filters return with analytics reporting.
         <div className="date-picker">
