@@ -4,14 +4,14 @@ include:
   - path:
       - ./apps/api/compose.yaml
       - ./apps/api/compose.dev.yaml
-  - path:
-      - ./apps/landing/compose.yaml
-      - ./apps/landing/compose.dev.yaml
-  - path:
-      - ./apps/dashboard/compose.yaml
-      - ./apps/dashboard/compose.dev.yaml
-  - path:
-      - ./apps/docs/compose.yaml
-      - ./apps/docs/compose.dev.yaml
+  #   - path:
+  #       - ./apps/landing/compose.yaml
+  #       - ./apps/landing/compose.dev.yaml
+  #   - path:
+  #       - ./apps/dashboard/compose.yaml
+  #       - ./apps/dashboard/compose.dev.yaml
+  #   - path:
+  #       - ./apps/docs/compose.yaml
+  #       - ./apps/docs/compose.dev.yaml
   - path: ./apps/umami/docker-compose.yml
     env_file: ./apps/api/.env

@@ -15,3 +15,5 @@ next-env.d.ts
 .DS_Store
 Thumbs.db
 Desktop.ini
+apps/dashboard/PRODUCT.md
+.agents
