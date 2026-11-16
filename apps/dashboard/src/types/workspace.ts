@@ -11,8 +11,5 @@ export interface LocalProject {
 }
 
 export interface LocalWorkspace {
-  version: 1;
-  email: string;
-  name: string;
-  project: LocalProject | null;
+  projects: LocalProject[];
 }

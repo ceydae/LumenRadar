@@ -8,6 +8,7 @@ export default function ConnectionChoice({
   icon: Icon,
   selected,
   disabled,
+  comingSoon = false,
   onSelect,
 }: {
   value: ConnectionMode;
@@ -16,16 +17,17 @@ export default function ConnectionChoice({
   icon: LucideIcon;
   selected: boolean;
   disabled: boolean;
+  comingSoon?: boolean;
   onSelect: (value: ConnectionMode) => void;
 }) {
   return (
-    <label className="connection-choice">
+    <label className="connection-choice" data-unavailable={comingSoon}>
       <input
         type="radio"
         name="connectionMode"
         value={value}
         checked={selected}
-        disabled={disabled}
+        disabled={disabled || comingSoon}
         onChange={() => onSelect(value)}
         required
       />
@@ -33,7 +35,7 @@ export default function ConnectionChoice({
         <Icon size={20} aria-hidden="true" />
       </span>
       <span className="choice-copy">
-        <strong>{label}</strong>
+        <strong>{label} {comingSoon && <span className="coming-soon-label">Coming Soon</span>}</strong>
         <span>{description}</span>
       </span>
       <span className="choice-check" aria-hidden="true" />

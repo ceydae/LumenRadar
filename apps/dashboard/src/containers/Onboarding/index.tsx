@@ -2,49 +2,44 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowUpRight, Check, Globe2, LogOut } from "lucide-react";
-import Brand from "@/components/Brand";
+import { ArrowLeft, ArrowUpRight, Check, Globe2 } from "lucide-react";
+import Link from "next/link";
+import AccountHeader from "@/components/AccountHeader";
+import ProjectLoadError from "@/components/ProjectLoadError";
 import SessionLoading from "@/components/SessionLoading";
 import ProjectForm from "@/containers/ProjectForm";
 import ConnectionSetup from "@/containers/ConnectionSetup";
-import { useLocalSession } from "@/hooks/useLocalSession";
+import { useSession } from "@/hooks/useSession";
 import { useWorkspace } from "@/hooks/useWorkspace";
-import { signOut } from "@/lib/session";
+import { MAX_PROJECTS, type ProjectDetails } from "@/lib/workspace";
 
-export default function Onboarding() {
+export default function Onboarding({ projectId }: { projectId?: string }) {
   const router = useRouter();
-  const { session, status } = useLocalSession();
-  const { workspace, loaded } = useWorkspace(session?.email);
+  const { session, status } = useSession();
+  const { workspace, loaded, error, retry } = useWorkspace(session?.id);
   const [editingProject, setEditingProject] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const project = workspace?.project ?? null;
+  const existingProject = workspace.projects.find((item) => item.id === projectId) ?? null;
+  const [draft, setDraft] = useState<ProjectDetails | null>(null);
+  const project = draft ?? existingProject;
   const step = project && !editingProject ? 2 : 1;
   useEffect(() => {
     if (status === "unauthenticated") router.replace("/login");
-    else if (status === "authenticated" && loaded && project?.connectionMode)
-      router.replace("/");
-  }, [status, loaded, project?.connectionMode, router]);
+    else if (status === "authenticated" && loaded && existingProject?.connectionMode)
+      router.replace(`/projects/${projectId}`);
+  }, [status, loaded, existingProject?.connectionMode, projectId, router]);
   useEffect(() => {
     headingRef.current?.focus();
   }, [step]);
-  if (!session || !loaded || project?.connectionMode) return <SessionLoading />;
+  if (!session || !loaded || existingProject?.connectionMode) return <SessionLoading />;
+  if (error) return <ProjectLoadError error={error} onRetry={() => void retry()} />;
+  if (projectId && !project) return <ProjectLoadError error="This project doesn’t exist or isn’t available to your account." />;
+  if (!projectId && workspace.projects.length >= MAX_PROJECTS) return <ProjectLoadError title="Project limit reached." error="You’ve reached the limit of five projects for your account." />;
   return (
     <div className="setup-page">
-      <header className="setup-header">
-        <Brand tone="light" />
-        <div className="setup-account">
-          <span>{workspace?.name || session.email}</span>
-          <button
-            type="button"
-            className="icon-button"
-            aria-label="Sign out"
-            onClick={signOut}
-          >
-            <LogOut size={17} aria-hidden="true" />
-          </button>
-        </div>
-      </header>
+      <AccountHeader name={session.name} />
       <main className="setup-main">
+        <Link className="back-button projects-back" href="/"><ArrowLeft size={15} aria-hidden="true" /> All projects</Link>
         <nav aria-label="Setup progress">
           <ol className="setup-progress">
             {["Project details", "Data sources"].map((label, index) => (
@@ -81,16 +76,19 @@ export default function Onboarding() {
             </div>
             {step === 1 ? (
               <ProjectForm
-                key={project?.id ?? "new"}
-                email={session.email}
+                key={existingProject?.id ?? "new"}
                 project={project}
-                onComplete={() => setEditingProject(false)}
+                onComplete={(details) => {
+                  setDraft(details);
+                  setEditingProject(false);
+                }}
               />
             ) : (
               <ConnectionSetup
-                email={session.email}
+                accountId={session.id}
                 project={project!}
                 onBack={() => setEditingProject(true)}
+                onComplete={(saved) => router.push(`/projects/${saved.id}`)}
               />
             )}
           </section>
@@ -102,7 +100,7 @@ export default function Onboarding() {
             <p>
               {project
                 ? new URL(project.websiteUrl).hostname
-                : "Start with a project. Bring your website and API activity into a shared workspace."}
+                : "Start with a project. Understand how people use your website."}
             </p>
             {project ? (
               <>
@@ -112,7 +110,7 @@ export default function Onboarding() {
                 </div>
                 <div className="setup-summary-detail">
                   <span>Next</span>
-                  <p>Select website analytics, API analytics, or both.</p>
+                  <p>Create your website project. Tracking installation is coming soon.</p>
                 </div>
               </>
             ) : (

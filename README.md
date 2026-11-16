@@ -36,7 +36,7 @@ The project name stays `lumen-radar-api` to reuse the existing database volume.
 | --- | --- |
 | Landing | `http://127.0.0.1:3050` |
 | API | `http://127.0.0.1:3051` |
-| Dashboard | `http://127.0.0.1:3052` |
+| Dashboard | `http://localhost:3052` |
 | Docs | `http://127.0.0.1:3053` |
 
 All published ports bind to `127.0.0.1`. PostgreSQL has no published port.
