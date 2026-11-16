@@ -1,6 +1,6 @@
 import type { OpenAPIV3 } from 'openapi-types';
 
-import { projectResponses } from './responses.js';
+import { projectResponses, analyticsResponses } from './responses.js';
 
 export const projectPaths: OpenAPIV3.PathsObject = {
   '/api/projects': {
@@ -85,6 +85,46 @@ export const projectPaths: OpenAPIV3.PathsObject = {
       responses: {
         ...projectResponses,
         '204': { description: 'Project deleted. No response body.' },
+      },
+    },
+  },
+  '/api/projects/{id}/analytics/setup': {
+    parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string', format: 'uuid' } }],
+    post: {
+      tags: ['Projects'],
+      operationId: 'setupProjectAnalytics',
+      summary: 'Set up web analytics for your project',
+      description: 'Creates or reuses the project website in Umami. Use the returned websiteId in the tracking script.',
+      security: [{ sessionCookie: [] }],
+      responses: {
+        ...projectResponses,
+        '200': {
+          description: 'Website ready for tracker installation.',
+          content: { 'application/json': { schema: { $ref: '#/components/schemas/ProjectAnalyticsSetup' } } },
+        },
+        ...analyticsResponses,
+      },
+    },
+  },
+  '/api/projects/{id}/analytics': {
+    parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string', format: 'uuid' } }],
+    get: {
+      tags: ['Projects'],
+      operationId: 'getProjectAnalytics',
+      summary: 'Read pageviews for your project',
+      description: 'Omit both timestamps for all-time pageviews, or send both for a specific range.',
+      security: [{ sessionCookie: [] }],
+      parameters: [
+        { name: 'startAt', in: 'query', description: 'Range start in Unix milliseconds. Required if endAt is provided.', schema: { type: 'integer', format: 'int64', minimum: 0 } },
+        { name: 'endAt', in: 'query', description: 'Range end in Unix milliseconds, greater than startAt. Required if startAt is provided.', schema: { type: 'integer', format: 'int64', minimum: 0 } },
+      ],
+      responses: {
+        ...projectResponses,
+        '200': {
+          description: 'Pageviews for the selected range, including zero when no visits were recorded.',
+          content: { 'application/json': { schema: { $ref: '#/components/schemas/ProjectAnalytics' } } },
+        },
+        ...analyticsResponses,
       },
     },
   },

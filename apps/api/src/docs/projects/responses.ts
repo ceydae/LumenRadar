@@ -26,3 +26,18 @@ export const projectResponses: OpenAPIV3.ResponsesObject = {
     content: { 'application/json': { schema: { $ref: '#/components/schemas/Error' } } },
   },
 };
+
+export const analyticsResponses: OpenAPIV3.ResponsesObject = {
+  '409': {
+    description: 'Web analytics is not available for the project or has not been set up.',
+    content: { 'application/json': { schema: { $ref: '#/components/schemas/Error' } } },
+  },
+  '502': {
+    description: 'Umami did not return a valid response.',
+    content: { 'application/json': { schema: { $ref: '#/components/schemas/Error' } } },
+  },
+  '503': {
+    description: 'The Umami API key is missing on the server.',
+    content: { 'application/json': { schema: { $ref: '#/components/schemas/Error' } } },
+  },
+};

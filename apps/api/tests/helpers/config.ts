@@ -9,4 +9,6 @@ export const testConfig: Config = {
   DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/lumen_radar',
   DISCORD_CLIENT_ID: '123456789012345678',
   DISCORD_CLIENT_SECRET: 'test-discord-secret',
+  UMAMI_API_URL: 'http://127.0.0.1:3054/api',
+  UMAMI_API_KEY: '',
 };

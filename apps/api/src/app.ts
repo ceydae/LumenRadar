@@ -14,7 +14,13 @@ export const createApp = (config: Config, auth: Auth, database: Pool): express.E
   const app = express();
 
   app.locals.authContext = { auth, config };
-  app.locals.projectContext = { auth, database, clientOrigin: config.CLIENT_ORIGIN, apiOrigin: config.BETTER_AUTH_URL };
+  app.locals.projectContext = {
+    auth,
+    database,
+    clientOrigin: config.CLIENT_ORIGIN,
+    apiOrigin: config.BETTER_AUTH_URL,
+    umami: { UMAMI_API_URL: config.UMAMI_API_URL, UMAMI_API_KEY: config.UMAMI_API_KEY },
+  };
   app.locals.openapi = createOpenApi(config);
 
   app.disable('x-powered-by');

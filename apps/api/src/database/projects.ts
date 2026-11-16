@@ -10,6 +10,7 @@ const projectColumns = `
   website_url AS "websiteUrl",
   description,
   mode,
+  umami_website_id AS "umamiWebsiteId",
   created_at AS "createdAt",
   updated_at AS "updatedAt"
 `;
@@ -124,6 +125,21 @@ export const deleteProject = async (
   const result = await database.query(
     'DELETE FROM projects WHERE id = $1 AND owner_id = $2',
     [id, userId],
+  );
+
+  return result.rowCount === 1;
+};
+
+export const linkUmamiWebsite = async (
+  database: Pool,
+  userId: string,
+  id: string,
+  websiteId: string,
+): Promise<boolean> => {
+  const result = await database.query(
+    `UPDATE projects SET umami_website_id = $3, updated_at = now()
+     WHERE id = $1 AND owner_id = $2 AND (umami_website_id IS NULL OR umami_website_id = $3)`,
+    [id, userId, websiteId],
   );
 
   return result.rowCount === 1;

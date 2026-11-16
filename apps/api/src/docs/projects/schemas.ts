@@ -25,13 +25,14 @@ export const projectSchemas: Record<string, OpenAPIV3.SchemaObject> = {
   },
   Project: {
     type: 'object',
-    required: ['id', 'streamName', 'websiteUrl', 'description', 'mode', 'createdAt', 'updatedAt'],
+    required: ['id', 'streamName', 'websiteUrl', 'description', 'mode', 'umamiWebsiteId', 'createdAt', 'updatedAt'],
     properties: {
       id: { type: 'string', format: 'uuid' },
       streamName: { type: 'string' },
       websiteUrl: { type: 'string', format: 'uri' },
       description: { type: 'string', maxLength: 200, description: 'How this project uses Stellar. Existing projects may have an empty description until updated.' },
       mode: { type: 'string', enum: ['web', 'api', 'both'] },
+      umamiWebsiteId: { type: 'string', format: 'uuid', nullable: true },
       createdAt: { type: 'string', format: 'date-time' },
       updatedAt: { type: 'string', format: 'date-time' },
     },
@@ -45,5 +46,15 @@ export const projectSchemas: Record<string, OpenAPIV3.SchemaObject> = {
     type: 'object',
     required: ['projects'],
     properties: { projects: { type: 'array', maxItems: 5, items: { $ref: '#/components/schemas/Project' } } },
+  },
+  ProjectAnalyticsSetup: {
+    type: 'object',
+    required: ['websiteId'],
+    properties: { websiteId: { type: 'string', format: 'uuid' } },
+  },
+  ProjectAnalytics: {
+    type: 'object',
+    required: ['pageviews'],
+    properties: { pageviews: { type: 'integer', minimum: 0 } },
   },
 };

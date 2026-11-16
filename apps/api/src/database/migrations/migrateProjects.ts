@@ -13,5 +13,6 @@ export const migrateProjects = async (database: Pool): Promise<void> => {
     );
     CREATE INDEX IF NOT EXISTS projects_owner_id_idx ON projects (owner_id);
     ALTER TABLE projects ADD COLUMN IF NOT EXISTS description VARCHAR(200) NOT NULL DEFAULT '';
+    ALTER TABLE projects ADD COLUMN IF NOT EXISTS umami_website_id UUID;
   `);
 };

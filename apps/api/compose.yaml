@@ -32,6 +32,8 @@ services:
       CLIENT_ORIGIN: ${CLIENT_ORIGIN:?Set CLIENT_ORIGIN in .env}
       DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID:-}
       DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET:-}
+      UMAMI_API_URL: ${UMAMI_DOCKER_API_URL:-http://umami:3000/api}
+      UMAMI_API_KEY: ${UMAMI_API_KEY:-}
       DATABASE_URL: postgresql://${POSTGRES_USER:-lumen_radar}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/${POSTGRES_DB:-lumen_radar}
     ports:
       - "127.0.0.1:${PORT:-3051}:3051"

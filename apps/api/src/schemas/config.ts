@@ -28,6 +28,8 @@ const baseConfigSchema = z.object({
   ),
   DISCORD_CLIENT_ID: z.string().default(''),
   DISCORD_CLIENT_SECRET: z.string().default(''),
+  UMAMI_API_URL: z.url({ protocol: /^https?$/ }).default('http://127.0.0.1:3054/api'),
+  UMAMI_API_KEY: z.string().trim().default(''),
 });
 
 export const configSchema = baseConfigSchema.superRefine(
