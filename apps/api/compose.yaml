@@ -41,5 +41,51 @@ services:
         restart: true
     stop_grace_period: 15s
 
+  umami:
+    image: ghcr.io/umami-software/umami:3.5.0
+    profiles: [umami]
+    init: true
+    restart: unless-stopped
+    environment:
+      APP_SECRET: ${UMAMI_APP_SECRET:-}
+      DATABASE_URL: postgresql://umami:${UMAMI_POSTGRES_PASSWORD:-}@umami-db:5432/umami
+    ports:
+      - "127.0.0.1:${UMAMI_PORT:-3054}:3000"
+    networks:
+      - default
+      - umami_db
+    depends_on:
+      umami-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:3000/api/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
+
+  umami-db:
+    image: postgres:17-bookworm
+    profiles: [umami]
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: umami
+      POSTGRES_DB: umami
+      POSTGRES_PASSWORD: ${UMAMI_POSTGRES_PASSWORD:-}
+    volumes:
+      - umami_data:/var/lib/postgresql/data
+    networks:
+      - umami_db
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "umami", "-d", "umami"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+networks:
+  umami_db:
+    internal: true
+
 volumes:
   postgres_data:
+  umami_data:
