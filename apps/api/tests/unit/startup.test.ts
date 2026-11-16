@@ -1,8 +1,9 @@
 import express from 'express';
-import { once } from 'node:events';
 import type { Pool } from 'pg';
+import { once } from 'node:events';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { startServer } from './startup.js';
+
+import { startServer } from '../../src/startup.js';
 
 describe('server lifecycle', () => {
   const signalListeners = new Map<NodeJS.Signals, NodeJS.SignalsListener>();

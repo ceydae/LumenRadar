@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createPool } from './pool.js';
+
+import { createPool } from '../../src/database/pool.js';
 
 describe('database pool', () => {
   it('logs idle connection failures without crashing the process', async () => {

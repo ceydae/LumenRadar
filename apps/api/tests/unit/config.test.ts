@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { readConfig } from './config.js';
-import { testConfig } from './test/config.js';
+
+import { readConfig } from '../../src/config.js';
+import { testConfig } from '../helpers/config.js';
 
 describe('configuration', () => {
   it('reads the environment and converts the port', () => {

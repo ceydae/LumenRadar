@@ -1,7 +1,9 @@
 import { getMigrations } from 'better-auth/db/migration';
-import { createAuth } from '../auth/auth.js';
-import { readConfig } from '../config.js';
+
 import { createPool } from './pool.js';
+import { readConfig } from '../config.js';
+import { createAuth } from '../auth/auth.js';
+import { migrateProjects } from './migrations/migrateProjects.js';
 
 try {
   const config = readConfig();
@@ -10,6 +12,7 @@ try {
     const auth = createAuth(config, database);
     const { runMigrations } = await getMigrations(auth.options);
     await runMigrations();
+    await migrateProjects(database);
     console.info('Database is up to date.');
   } finally {
     await database.end();
