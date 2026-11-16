@@ -91,6 +91,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/scripts ./scripts
+RUN sed -i 's/\r$//' scripts/start-docker.sh
 COPY --from=builder /app/generated ./generated
 
 # Automatically leverage output traces to reduce image size
