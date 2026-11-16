@@ -31,11 +31,9 @@ Documentation: https://animate-ui.com/docs
 - `src/constants`: navigation configuration.
 - `src/utils`: class merging and number formatting.
 
-The Overview includes date filters, chart metric selection, CSV export for available
-data, and connection details. New projects start with empty reports. Other navigation
-items are disabled until their pages are built. Authentication uses the API;
-the script records website page views. Aggregated reports and live OpenTelemetry
-collection are not connected yet.
+The analytics Overview is commented out for the MVP. Other navigation items are
+disabled until their pages are built. Authentication and project management use
+the API. Website tracking, reports, and OpenTelemetry collection are not available yet.
 
 ## Discord sign-in and project flow
 
@@ -47,28 +45,28 @@ The API creates accounts on first sign-in. Requests include credentials; the API
 HttpOnly cookie authenticates GET `/api/auth/get-session` and POST `/api/auth/sign-out`.
 
 After sign-in, `/` shows the account's projects and a square Create Project tile.
-Each account can have five projects, including drafts. The API enforces this
+Each account can have five projects. The API enforces this
 limit under a transaction lock so concurrent requests cannot exceed it.
 `/projects/new` collects the name, website URL, and Stellar description (200
-characters maximum). `/projects/:id/setup` enables Website analytics; API analytics
-and Website & API are disabled and labelled Coming Soon. Drafts can be resumed
-from their project tiles. `/onboarding` redirects to the new project route.
+characters maximum). The first step keeps an in-memory draft; the second step
+offers Website analytics, with API analytics and Website & API disabled and labelled
+Coming Soon. Only the final submission creates the project, sending `streamName`,
+`websiteUrl`, `description`, and `mode: "web"` to POST `/api/projects`.
+Reloading before submission discards the draft. Existing project setup routes
+redirect to the project. `/onboarding` redirects to the new project route.
+The client unwraps `{ projects }` and `{ project }` responses and maps API fields
+to its interface model.
 
 `/projects/:id` opens that project's installation page. For the MVP, the overview
 charts, metrics, connection dialog, and date filter are commented out in Dashboard
 and Header. The page shows a brand banner, the installation panel, and an expandable
-setup guide, without data-dependent widgets. Its installation panel provides a
-copyable, project-specific script to insert before `</head>`. The API serves
-`/tracker.js`; it records initial page views and SPA path changes through
-`/api/collect`, accepting the configured website origin. Only paths are stored,
-without query strings, visitor cookies, or identifiers. This is basic page-view
-collection, not verified traffic or unique visitor counting. The report widgets
-still show empty states until reporting queries are connected. A live website
-requires a publicly accessible HTTPS API address rather than localhost.
+setup guide, without data-dependent widgets. The installation panel is labelled
+Coming Soon: the current API does not provide a tracker endpoint. There is no
+copyable script or collection request until the backend exposes that contract.
 
 Sessions are checked on mount, window focus, and every minute. Old browser-local
-sessions cannot authenticate. Sign-out clears the server session. Projects and
-drafts are persisted in PostgreSQL and every project request is scoped to the
+sessions cannot authenticate. Sign-out clears the server session. Saved projects
+are persisted by the API and every project request is scoped to the
 authenticated user ID. Legacy browser-local project drafts are not imported.
 
 Use http://localhost:3052 with the local API at http://localhost:3051. Set the API's
@@ -117,6 +115,7 @@ npm run lint
 npm run typecheck
 npm run build
 node --test src/lib/session.test.mjs
+node --experimental-strip-types --test src/lib/workspace.test.mjs
 ```
 
 Use `npm start` to serve a production build.
