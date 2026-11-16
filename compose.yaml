@@ -13,3 +13,5 @@ include:
   - path:
       - ./apps/docs/compose.yaml
       - ./apps/docs/compose.dev.yaml
+  - path: ./apps/umami/docker-compose.yml
+    env_file: ./apps/api/.env

@@ -1,38 +1,44 @@
----
 services:
   umami:
-    image: ghcr.io/umami-software/umami:latest
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_URL: postgresql://umami:umami@db:5432/umami
-      # Generate with: openssl rand -hex 32
-      APP_SECRET: ${APP_SECRET:?Set APP_SECRET in your .env file}
-      # Required for two-factor authentication, generate with: openssl rand -hex 32
-      TWO_FACTOR_ENCRYPTION_KEY: replace-me-with-a-64-character-hex-string
-    depends_on:
-      db:
-        condition: service_healthy
+    build:
+      context: .
+      args:
+        SKIP_BUILD_GEO: '1'
     init: true
     restart: always
-    healthcheck:
-      test: ["CMD-SHELL", "curl http://localhost:3000/api/heartbeat"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-  db:
-    image: postgres:15-alpine
     environment:
-      POSTGRES_DB: umami
-      POSTGRES_USER: umami
-      POSTGRES_PASSWORD: umami
-    volumes:
-      - umami-db-data:/var/lib/postgresql/data
-    restart: always
+      APP_SECRET: ${UMAMI_APP_SECRET:?Set UMAMI_APP_SECRET in the API .env}
+      TWO_FACTOR_ENCRYPTION_KEY: ${UMAMI_TWO_FACTOR_ENCRYPTION_KEY:-}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-lumen_radar}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/umami
+    ports:
+      - '127.0.0.1:${UMAMI_PORT:-3054}:3000'
+    depends_on:
+      umami-db-init:
+        condition: service_completed_successfully
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
-      interval: 5s
+      test: ['CMD', 'curl', '--fail', '--silent', 'http://127.0.0.1:3000/api/heartbeat']
+      interval: 10s
       timeout: 5s
-      retries: 5
-volumes:
-  umami-db-data:
+      retries: 6
+      start_period: 30s
+    stop_grace_period: 15s
+
+  umami-db-init:
+    image: postgres:17-bookworm
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGHOST: postgres
+      PGDATABASE: postgres
+      PGUSER: ${POSTGRES_USER:-lumen_radar}
+      PGPASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    command:
+      - sh
+      - -ec
+      - |
+        psql -X -v ON_ERROR_STOP=1 <<'SQL'
+        SELECT 'CREATE DATABASE umami'
+        WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'umami')
+        \gexec
+        SQL
