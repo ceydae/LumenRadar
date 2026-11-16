@@ -1,4 +1,4 @@
-export type DateRange = "7d" | "30d";
+export type DateRange = "all" | "7d" | "30d";
 export type MetricKey = "visitors" | "pageviews" | "requests";
 
 export interface TrafficPoint {

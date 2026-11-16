@@ -14,6 +14,7 @@ interface ApiProject {
   mode: "web" | "api" | "both";
   createdAt: string;
   updatedAt: string;
+  umamiWebsiteId: string | null;
 }
 
 function toLocalProject(project: ApiProject): LocalProject {
@@ -25,6 +26,7 @@ function toLocalProject(project: ApiProject): LocalProject {
     connectionMode: project.mode,
     serviceName: "",
     createdAt: project.createdAt,
+    umamiWebsiteId: project.umamiWebsiteId ?? null,
   };
 }
 type ProjectState = { projects: LocalProject[]; loaded: boolean; error: string };
@@ -39,16 +41,17 @@ export class ProjectRequestError extends Error {
   }
 }
 
-async function projectRequest(path = "", body?: object, method = body ? "POST" : "GET") {
+export async function projectRequest(path = "", body?: object, method = body ? "POST" : "GET", signal?: AbortSignal) {
   const account = getSessionSnapshot().session?.id;
   let response: Response;
   try { response = await fetch(`${API_URL}/api/projects${path}`, {
     method,
     credentials: "include",
     cache: "no-store",
-    signal: AbortSignal.timeout(15000),
+    signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(15000)]) : AbortSignal.timeout(15000),
     ...(body ? { headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {}),
-  }); } catch {
+  }); } catch (error) {
+    if (signal?.aborted) throw error;
     throw new Error("The project service couldn't be reached. Check your connection and try again.");
   }
   if (response.status === 204) return undefined;
@@ -112,7 +115,7 @@ function createProjectStore() {
         mode: "web",
       }, projectId ? "PATCH" : "POST"); }
       catch (error) {
-        if (error instanceof ProjectRequestError && error.code === "PROJECT_LIMIT_REACHED") void this.load();
+        if (error instanceof ProjectRequestError && (error.code === "PROJECT_LIMIT_REACHED" || error.status === 404)) void this.load();
         throw error;
       }
       const project = toLocalProject(data.project);
@@ -123,11 +126,20 @@ function createProjectStore() {
         ? state.projects.map((item) => item.id === project.id ? project : item)
         : [project, ...state.projects];
       update({ projects, loaded: true, error: "" });
+      await this.load();
       return project;
     },
     async detail(id: string) {
       const current = revision;
-      const data: { project: ApiProject } = await projectRequest(`/${encodeURIComponent(id)}`);
+      let data: { project: ApiProject };
+      try { data = await projectRequest(`/${encodeURIComponent(id)}`); }
+      catch (error) {
+        if (current === revision && error instanceof ProjectRequestError && error.status === 404) {
+          update({ ...state, projects: state.projects.filter((project) => project.id !== id) });
+          void this.load();
+        }
+        throw error;
+      }
       if (current !== revision) throw new DOMException("This project request is no longer current.", "AbortError");
       const project = toLocalProject(data.project);
       update({ ...state, projects: state.projects.some((item) => item.id === id)
@@ -147,6 +159,18 @@ function createProjectStore() {
       revision++;
       loading = undefined;
       update({ projects: state.projects.filter((item) => item.id !== id), loaded: true, error: "" });
+      await this.load();
+    },
+    async setup(id: string) {
+      const current = revision;
+      const data: { websiteId: string } = await projectRequest(`/${encodeURIComponent(id)}/analytics/setup`, {});
+      if (current !== revision) throw new Error("Your workspace changed. Please try again.");
+      if (typeof data.websiteId !== "string" || !data.websiteId) throw new Error("Analytics setup returned an invalid website ID. Please retry setup.");
+      revision++;
+      loading = undefined;
+      update({ ...state, projects: state.projects.map((project) => project.id === id ? { ...project, umamiWebsiteId: data.websiteId } : project) });
+      await this.load();
+      return data.websiteId;
     },
   };
 }

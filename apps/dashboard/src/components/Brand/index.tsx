@@ -19,18 +19,39 @@ export default function Brand({
         height={641}
         priority
       />
-      <Image
-        className={`brand-wordmark sidebar-label${tone === "auto" ? " theme-light" : ""}`}
-        src={`/brand/wordmark-${color}.svg`}
-        alt=""
-        width={1743}
-        height={143}
-        priority
-      />
-      {tone === "auto" && <>
-        <Image className="brand-symbol theme-dark" src="/brand/symbol-white.svg" alt="" width={559} height={641} priority />
-        <Image className="brand-wordmark sidebar-label theme-dark" src="/brand/wordmark-white.svg" alt="" width={1743} height={143} priority />
-      </>}
+      {tone === "auto" && (
+        <Image
+          className="brand-symbol theme-dark"
+          src="/brand/symbol-white.svg"
+          alt=""
+          width={559}
+          height={641}
+          priority
+        />
+      )}
+      <span
+        className="brand-wordmark-frame sidebar-label"
+        data-sidebar="group-label"
+      >
+        <Image
+          className={`brand-wordmark${tone === "auto" ? " theme-light" : ""}`}
+          src={`/brand/wordmark-${color}.svg`}
+          alt=""
+          width={1743}
+          height={143}
+          priority
+        />
+        {tone === "auto" && (
+          <Image
+            className="brand-wordmark theme-dark"
+            src="/brand/wordmark-white.svg"
+            alt=""
+            width={1743}
+            height={143}
+            priority
+          />
+        )}
+      </span>
     </Link>
   );
 }

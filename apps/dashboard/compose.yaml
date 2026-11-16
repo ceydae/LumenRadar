@@ -5,6 +5,7 @@ services:
       target: runtime
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3051}
+        NEXT_PUBLIC_UMAMI_URL: ${NEXT_PUBLIC_UMAMI_URL:-http://localhost:3054}
     init: true
     restart: always
     ports:

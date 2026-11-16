@@ -9,6 +9,7 @@ const apiProject = {
   mode: "web",
   createdAt: "2026-11-16T00:00:00.000Z",
   updatedAt: "2026-11-16T00:00:00.000Z",
+  umamiWebsiteId: null,
 };
 const details = { name: " Orbit ", websiteUrl: "https://orbit.example", stellarDescription: "Stellar payments" };
 
@@ -36,6 +37,7 @@ test("frontend project API contract", async (t) => {
     let calls = 0;
     globalThis.fetch = async (url, options) => {
       calls++;
+      if (options.method === "GET") return Response.json({ projects: [apiProject] });
       assert.ok(url.endsWith("/api/projects"));
       assert.equal(options.method, "POST");
       assert.equal(options.credentials, "include");
@@ -45,7 +47,7 @@ test("frontend project API contract", async (t) => {
       return Response.json({ project: apiProject }, { status: 201 });
     };
     const project = await saveProject("create-contract", details);
-    assert.equal(calls, 1);
+    assert.equal(calls, 2);
     assert.equal(project.id, apiProject.id);
     assert.equal(project.connectionMode, "web");
     assert.equal(workspaceStore("create-contract").getSnapshot().projects.length, 1);
@@ -53,6 +55,7 @@ test("frontend project API contract", async (t) => {
 
   await t.test("updates by UUID using the API field names", async () => {
     globalThis.fetch = async (url, options) => {
+      if (options.method === "GET") return Response.json({ projects: [apiProject] });
       assert.ok(url.endsWith(`/api/projects/${apiProject.id}`));
       assert.equal(options.method, "PATCH");
       assert.equal(JSON.parse(options.body).streamName, "Orbit");
@@ -79,7 +82,10 @@ test("frontend project API contract", async (t) => {
 
   await t.test("accepts 200 description characters and rejects 201 before sending", async () => {
     let calls = 0;
-    globalThis.fetch = async () => { calls++; return Response.json({ project: apiProject }); };
+    globalThis.fetch = async (_url, options) => {
+      if (options.method === "GET") return Response.json({ projects: [apiProject] });
+      calls++; return Response.json({ project: apiProject });
+    };
     await saveProject("description-contract", { ...details, stellarDescription: "x".repeat(200) });
     await assert.rejects(saveProject("description-contract", { ...details, stellarDescription: "x".repeat(201) }), /200 characters/);
     assert.equal(calls, 1);
@@ -102,6 +108,7 @@ test("frontend project API contract", async (t) => {
     globalThis.fetch = async () => Response.json({ projects: [apiProject] });
     await store.load();
     globalThis.fetch = async (url, options) => {
+      if (options.method === "GET") return Response.json({ projects: [] });
       assert.ok(url.endsWith(`/api/projects/${apiProject.id}`));
       assert.equal(options.method, "DELETE");
       assert.equal(options.credentials, "include");
@@ -126,7 +133,7 @@ test("frontend project API contract", async (t) => {
     let resolveList;
     globalThis.fetch = async () => new Promise((resolve) => { resolveList = resolve; });
     const loading = store.load();
-    globalThis.fetch = async () => new Response(null, { status: 204 });
+    globalThis.fetch = async (_url, options) => options.method === "GET" ? Response.json({ projects: [] }) : new Response(null, { status: 204 });
     await store.remove(apiProject.id);
     resolveList(Response.json({ projects: [apiProject] }));
     await loading;
