@@ -4,14 +4,14 @@ import { ArrowLeft } from "lucide-react";
 import ConnectionChoice from "@/components/ConnectionChoice";
 import FormSubmit from "@/components/FormSubmit";
 import { connectionOptions } from "@/constants/connections";
-import { saveConnection } from "@/lib/workspace";
+import { saveProject, type ProjectDetails } from "@/lib/workspace";
 import type { LocalProject } from "@/types/workspace";
 
 export default function ConnectionSetup({ accountId, project, onBack, onComplete }: {
   accountId: string;
-  project: LocalProject;
+  project: ProjectDetails;
   onBack: () => void;
-  onComplete: () => void;
+  onComplete: (project: LocalProject) => void;
 }) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
@@ -21,8 +21,8 @@ export default function ConnectionSetup({ accountId, project, onBack, onComplete
     setPending(true);
     setError("");
     try {
-      await saveConnection(accountId, project.id);
-      onComplete();
+      const saved = await saveProject(accountId, project);
+      onComplete(saved);
     } catch (error) {
       setError(error instanceof Error ? error.message : "Your data source couldn't be saved. Please try again.");
       setPending(false);

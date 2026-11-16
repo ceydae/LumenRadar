@@ -11,7 +11,7 @@ import ProjectForm from "@/containers/ProjectForm";
 import ConnectionSetup from "@/containers/ConnectionSetup";
 import { useSession } from "@/hooks/useSession";
 import { useWorkspace } from "@/hooks/useWorkspace";
-import { MAX_PROJECTS } from "@/lib/workspace";
+import { MAX_PROJECTS, type ProjectDetails } from "@/lib/workspace";
 
 export default function Onboarding({ projectId }: { projectId?: string }) {
   const router = useRouter();
@@ -19,17 +19,19 @@ export default function Onboarding({ projectId }: { projectId?: string }) {
   const { workspace, loaded, error, retry } = useWorkspace(session?.id);
   const [editingProject, setEditingProject] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const project = workspace.projects.find((item) => item.id === projectId) ?? null;
+  const existingProject = workspace.projects.find((item) => item.id === projectId) ?? null;
+  const [draft, setDraft] = useState<ProjectDetails | null>(null);
+  const project = draft ?? existingProject;
   const step = project && !editingProject ? 2 : 1;
   useEffect(() => {
     if (status === "unauthenticated") router.replace("/login");
-    else if (status === "authenticated" && loaded && project?.connectionMode)
+    else if (status === "authenticated" && loaded && existingProject?.connectionMode)
       router.replace(`/projects/${projectId}`);
-  }, [status, loaded, project?.connectionMode, projectId, router]);
+  }, [status, loaded, existingProject?.connectionMode, projectId, router]);
   useEffect(() => {
     headingRef.current?.focus();
   }, [step]);
-  if (!session || !loaded || project?.connectionMode) return <SessionLoading />;
+  if (!session || !loaded || existingProject?.connectionMode) return <SessionLoading />;
   if (error) return <ProjectLoadError error={error} onRetry={() => void retry()} />;
   if (projectId && !project) return <ProjectLoadError error="This project doesn’t exist or isn’t available to your account." />;
   if (!projectId && workspace.projects.length >= MAX_PROJECTS) return <ProjectLoadError title="Project limit reached." error="You’ve reached the limit of five projects for your account." />;
@@ -74,12 +76,11 @@ export default function Onboarding({ projectId }: { projectId?: string }) {
             </div>
             {step === 1 ? (
               <ProjectForm
-                key={project?.id ?? "new"}
-                accountId={session.id}
+                key={existingProject?.id ?? "new"}
                 project={project}
-                onComplete={(saved) => {
+                onComplete={(details) => {
+                  setDraft(details);
                   setEditingProject(false);
-                  if (!projectId) router.replace(`/projects/${saved.id}/setup`);
                 }}
               />
             ) : (
@@ -87,7 +88,7 @@ export default function Onboarding({ projectId }: { projectId?: string }) {
                 accountId={session.id}
                 project={project!}
                 onBack={() => setEditingProject(true)}
-                onComplete={() => router.push(`/projects/${project!.id}`)}
+                onComplete={(saved) => router.push(`/projects/${saved.id}`)}
               />
             )}
           </section>
@@ -109,7 +110,7 @@ export default function Onboarding({ projectId }: { projectId?: string }) {
                 </div>
                 <div className="setup-summary-detail">
                   <span>Next</span>
-                  <p>Enable website analytics, then install your project’s script.</p>
+                  <p>Create your website project. Tracking installation is coming soon.</p>
                 </div>
               </>
             ) : (

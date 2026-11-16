@@ -3,51 +3,33 @@
 import { useState, type FormEvent } from "react";
 import InputField from "@/components/InputField";
 import FormSubmit from "@/components/FormSubmit";
-import { saveProject } from "@/lib/workspace";
-import type { LocalProject } from "@/types/workspace";
+import type { ProjectDetails } from "@/lib/workspace";
 
 export default function ProjectForm({
-  accountId,
   project,
   onComplete,
 }: {
-  accountId: string;
-  project: LocalProject | null;
-  onComplete: (project: LocalProject) => void;
+  project: ProjectDetails | null;
+  onComplete: (project: ProjectDetails) => void;
 }) {
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState("");
   const [description, setDescription] = useState(project?.stellarDescription ?? "");
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (pending) return;
     const form = event.currentTarget;
+    const descriptionField = form.elements.namedItem("description") as HTMLTextAreaElement;
+    descriptionField.setCustomValidity(description.trim() ? "" : "Describe how your project uses Stellar.");
     if (!form.reportValidity()) return;
     const fields = new FormData(form);
-    setPending(true);
-    setError("");
-    try {
-      const saved = await saveProject(accountId, {
-        name: String(fields.get("projectName") ?? ""),
-        websiteUrl: String(fields.get("website") ?? ""),
-        stellarDescription: String(fields.get("description") ?? ""),
-      }, project?.id);
-      onComplete(saved);
-      setPending(false);
-    } catch (error) {
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Your project could not be saved. Please try again.",
-      );
-      setPending(false);
-    }
+    onComplete({
+      name: String(fields.get("projectName") ?? "").trim(),
+      websiteUrl: String(fields.get("website") ?? "").trim(),
+      stellarDescription: description.trim(),
+    });
   }
   return (
     <form
       className="login-form project-form"
       onSubmit={handleSubmit}
-      aria-busy={pending}
     >
       <InputField
         id="projectName"
@@ -57,8 +39,7 @@ export default function ProjectForm({
         defaultValue={project?.name}
         required
         pattern={String.raw`.*\S.*`}
-        maxLength={80}
-        disabled={pending}
+        maxLength={100}
       />
       <InputField
         id="website"
@@ -71,7 +52,6 @@ export default function ProjectForm({
         pattern="https?://.+"
         title="Use a full URL beginning with https:// or http://."
         maxLength={2048}
-        disabled={pending}
       />
       <div className="input-field">
         <label htmlFor="description">How does your project use Stellar?</label>
@@ -81,22 +61,19 @@ export default function ProjectForm({
           placeholder="Tell us briefly what you're building on Stellar."
           rows={4}
           value={description}
-          onChange={(event) => setDescription(event.target.value)}
+          onChange={(event) => {
+            event.target.setCustomValidity("");
+            setDescription(event.target.value);
+          }}
           aria-describedby="description-count"
           required
           maxLength={200}
-          disabled={pending}
         />
         <span className="field-hint" id="description-count">
           {description.length}/200 characters
         </span>
       </div>
-      {error && (
-        <p className="form-error" role="alert">
-          {error}
-        </p>
-      )}
-      <FormSubmit pending={pending}>Continue to data sources</FormSubmit>
+      <FormSubmit pending={false}>Continue to data sources</FormSubmit>
     </form>
   );
 }

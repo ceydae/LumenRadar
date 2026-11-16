@@ -4,7 +4,28 @@ export const MAX_PROJECTS = 5;
 export const MAX_DESCRIPTION_LENGTH = 200;
 export const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3051").replace(/\/$/, "");
 
-type ProjectDetails = Pick<LocalProject, "name" | "websiteUrl" | "stellarDescription">;
+export type ProjectDetails = Pick<LocalProject, "name" | "websiteUrl" | "stellarDescription">;
+interface ApiProject {
+  id: string;
+  streamName: string;
+  websiteUrl: string;
+  description: string;
+  mode: "web" | "api" | "both";
+  createdAt: string;
+  updatedAt: string;
+}
+
+function toLocalProject(project: ApiProject): LocalProject {
+  return {
+    id: project.id,
+    name: project.streamName,
+    websiteUrl: project.websiteUrl,
+    stellarDescription: project.description,
+    connectionMode: project.mode,
+    serviceName: "",
+    createdAt: project.createdAt,
+  };
+}
 type ProjectState = { projects: LocalProject[]; loaded: boolean; error: string };
 const initialState: ProjectState = { projects: [], loaded: false, error: "" };
 const stores = new Map<string, ReturnType<typeof createProjectStore>>();
@@ -41,7 +62,8 @@ function createProjectStore() {
       if (loading) return loading;
       loading = (async () => {
         try {
-          const projects: LocalProject[] = await projectRequest();
+          const data: { projects: ApiProject[] } = await projectRequest();
+          const projects = data.projects.map(toLocalProject);
           update({ projects, loaded: true, error: "" });
         } catch (error) {
           update({ ...state, loaded: true, error: error instanceof Error ? error.message : "Your projects couldn't be loaded. Please try again." });
@@ -52,14 +74,15 @@ function createProjectStore() {
     async save(details: ProjectDetails, projectId?: string) {
       if (details.stellarDescription.trim().length > MAX_DESCRIPTION_LENGTH)
         throw new Error("Keep your description to 200 characters or fewer.");
-      const project: LocalProject = await projectRequest(projectId ? `/${projectId}` : "", details, projectId ? "PATCH" : "POST");
+      const data: { project: ApiProject } = await projectRequest(projectId ? `/${projectId}` : "", {
+        streamName: details.name.trim(),
+        websiteUrl: details.websiteUrl.trim(),
+        description: details.stellarDescription.trim(),
+        mode: "web",
+      }, projectId ? "PATCH" : "POST");
+      const project = toLocalProject(data.project);
       const projects = [...state.projects.filter((item) => item.id !== project.id), project];
       update({ projects, loaded: true, error: "" });
-      return project;
-    },
-    async connect(projectId: string) {
-      const project: LocalProject = await projectRequest(`/${projectId}`, { connectionMode: "web" }, "PATCH");
-      update({ ...state, projects: state.projects.map((item) => item.id === projectId ? project : item), error: "" });
       return project;
     },
   };
@@ -73,8 +96,4 @@ export function workspaceStore(accountId: string) {
 
 export function saveProject(accountId: string, details: ProjectDetails, projectId?: string) {
   return workspaceStore(accountId).save(details, projectId);
-}
-
-export function saveConnection(accountId: string, projectId: string) {
-  return workspaceStore(accountId).connect(projectId);
 }
