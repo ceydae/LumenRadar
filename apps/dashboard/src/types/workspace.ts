@@ -8,6 +8,7 @@ export interface LocalProject {
   connectionMode: ConnectionMode | null;
   serviceName: string;
   createdAt: string;
+  umamiWebsiteId: string | null;
 }
 
 export interface LocalWorkspace {

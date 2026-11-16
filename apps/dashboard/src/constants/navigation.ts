@@ -2,12 +2,12 @@ import {
   Cable,
   ChartNoAxesCombined,
   Globe2,
-  LayoutDashboard,
+  ChartPie,
   Settings2,
 } from "lucide-react";
 
 export const navigation = [
-  { label: "Overview", icon: LayoutDashboard, available: true },
+  { label: "Overview", icon: ChartPie, available: true },
   { label: "Web analytics", icon: Globe2, available: false },
   { label: "API analytics", icon: ChartNoAxesCombined, available: false },
   { label: "Connections", icon: Cable, available: false },

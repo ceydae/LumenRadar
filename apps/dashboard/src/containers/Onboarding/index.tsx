@@ -12,6 +12,7 @@ import ConnectionSetup from "@/containers/ConnectionSetup";
 import { useSession } from "@/hooks/useSession";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { MAX_PROJECTS, type ProjectDetails } from "@/lib/workspace";
+import type { LocalProject } from "@/types/workspace";
 
 export default function Onboarding({ projectId }: { projectId?: string }) {
   const router = useRouter();
@@ -21,6 +22,7 @@ export default function Onboarding({ projectId }: { projectId?: string }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const existingProject = workspace.projects.find((item) => item.id === projectId) ?? null;
   const [draft, setDraft] = useState<ProjectDetails | null>(null);
+  const [savedProject, setSavedProject] = useState<LocalProject | null>(null);
   const project = draft ?? existingProject;
   const step = project && !editingProject ? 2 : 1;
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function Onboarding({ projectId }: { projectId?: string }) {
   if (!session || !loaded || existingProject?.connectionMode) return <SessionLoading />;
   if (error) return <ProjectLoadError error={error} onRetry={() => void retry()} />;
   if (projectId && !project) return <ProjectLoadError error="This project doesn’t exist or isn’t available to your account." />;
-  if (!projectId && workspace.projects.length >= MAX_PROJECTS) return <ProjectLoadError title="Project limit reached." error="You’ve reached the limit of five projects for your account." />;
+  if (!projectId && !draft && workspace.projects.length >= MAX_PROJECTS) return <ProjectLoadError title="Project limit reached." error="You’ve reached the limit of five projects for your account." />;
   return (
     <div className="setup-page">
       <AccountHeader name={session.name} />
@@ -87,6 +89,8 @@ export default function Onboarding({ projectId }: { projectId?: string }) {
               <ConnectionSetup
                 accountId={session.id}
                 project={project!}
+                savedProject={savedProject}
+                onSaved={setSavedProject}
                 onBack={() => setEditingProject(true)}
                 onComplete={(saved) => router.push(`/projects/${saved.id}`)}
               />
@@ -110,7 +114,7 @@ export default function Onboarding({ projectId }: { projectId?: string }) {
                 </div>
                 <div className="setup-summary-detail">
                   <span>Next</span>
-                  <p>Create your website project. Tracking installation is coming soon.</p>
+                  <p>Save your project, set up analytics, then install the tracking script on your website.</p>
                 </div>
               </>
             ) : (

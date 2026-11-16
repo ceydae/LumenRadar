@@ -1,54 +1,61 @@
-import { ArrowUpRight, ChevronRight } from "lucide-react";
-// import { CalendarDays } from "lucide-react";
-// import SelectField from "@/components/SelectField";
-import ProjectSwitcher from "@/components/ProjectSwitcher";
-import Link from "next/link";
-// import { dateRanges } from "@/data/demo-analytics";
-// import type { DateRange } from "@/types/analytics";
-import type { Project } from "@/types/analytics";
+"use client";
 
-interface Props {
-  projects: Project[];
-  project: Project;
-  websiteUrl: string;
-  // range: DateRange;
-  onProjectChange?: (id: string) => void;
-  // onRangeChange: (range: DateRange) => void;
-}
+import { ChevronDown, LogOut } from "lucide-react";
+import { DropdownMenu } from "@animate-ui/react/primitives/radix-ui/dropdown-menu";
+import Brand from "@/components/Brand";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Header({
-  projects,
-  project,
-  websiteUrl,
-  // range,
-  onProjectChange,
-  // onRangeChange,
-}: Props) {
+  name,
+  email,
+  onSignOut,
+}: {
+  name: string;
+  email: string;
+  onSignOut: () => void;
+}) {
   return (
-    <header className="topbar project-header">
-      <div className="project-header-context">
-        <ProjectSwitcher projects={projects} project={project} onProjectChange={onProjectChange} />
-        <nav className="project-header-breadcrumb" aria-label="Breadcrumb">
-          <Link href="/">Projects</Link>
-          <ChevronRight size={13} aria-hidden="true" />
-          <span aria-current="page">Website setup</span>
-        </nav>
-      </div>
-      <div className="project-header-actions">
-        <a className="project-website-link" href={websiteUrl} target="_blank" rel="noopener noreferrer" aria-label="Open website (opens in a new tab)">
-          <span className="project-website-label">Open website</span> <ArrowUpRight size={16} aria-hidden="true" />
-        </a>
-        {/* MVP: date filters return with analytics reporting.
-        <div className="date-picker">
-          <CalendarDays size={15} aria-hidden="true" />
-          <SelectField
-            label="Date range"
-            value={range}
-            options={dateRanges}
-            onChange={(value) => onRangeChange(value as DateRange)}
-          />
-        </div>
-        */}
+    <header className="workspace-header">
+      <Brand />
+      <div className="workspace-header-actions">
+        <ThemeToggle />
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger
+            className="workspace-account-trigger"
+            aria-label={`Account: ${name || email}`}
+          >
+            <span className="avatar" aria-hidden="true">
+              {(name || email).slice(0, 2).toUpperCase()}
+            </span>
+            <span className="workspace-account-name">
+              <bdi>{name || email}</bdi>
+            </span>
+            <ChevronDown size={14} aria-hidden="true" />
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              className="workspace-account-menu"
+              align="end"
+              sideOffset={8}
+              collisionPadding={12}
+            >
+              <DropdownMenu.Label className="workspace-account-label">
+                <strong>{name || "Workspace"}</strong>
+                <span>
+                  <bdi>{email}</bdi>
+                </span>
+              </DropdownMenu.Label>
+              <DropdownMenu.Separator className="project-switcher-separator" />
+              <DropdownMenu.Item
+                className="workspace-account-item"
+                onSelect={onSignOut}
+              >
+                <LogOut size={16} aria-hidden="true" />
+                Sign out
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
       </div>
     </header>
   );

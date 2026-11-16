@@ -7,6 +7,8 @@ import AccountHeader from "@/components/AccountHeader";
 import ProjectCard from "@/components/ProjectCard";
 import ProjectLoadError from "@/components/ProjectLoadError";
 import SessionLoading from "@/components/SessionLoading";
+import Skeleton from "@/components/Skeleton";
+import LoadingContent from "@/components/LoadingContent";
 import { useSession } from "@/hooks/useSession";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { MAX_PROJECTS } from "@/lib/workspace";
@@ -18,7 +20,7 @@ export default function Projects() {
   useEffect(() => {
     if (status === "unauthenticated") router.replace("/login");
   }, [status, router]);
-  if (!session || !loaded) return <SessionLoading />;
+  if (!session) return <SessionLoading />;
   const atLimit = workspace.projects.length >= MAX_PROJECTS;
   return (
     <div className="projects-page">
@@ -27,8 +29,9 @@ export default function Projects() {
         <main className="projects-main">
           <div className="projects-heading">
             <div><h1>Your projects</h1><p>Choose a project or create a new one to get started.</p></div>
-            <span className="project-count">{workspace.projects.length} / {MAX_PROJECTS} projects</span>
+            {loaded ? <span className="project-count">{workspace.projects.length} / {MAX_PROJECTS} projects</span> : <Skeleton className="skeleton-label" />}
           </div>
+          <LoadingContent loading={!loaded} label="Loading projects…" skeleton={<div className="project-grid">{[0, 1, 2].map((item) => <div key={item} className="project-card project-card-skeleton"><Skeleton className="skeleton-icon" /><Skeleton className="skeleton-title" /><Skeleton className="skeleton-long" /><Skeleton className="skeleton-label" /></div>)}</div>}>
           <div className="project-grid">
             {workspace.projects.map((project) => <ProjectCard key={project.id} project={project} />)}
             {atLimit ? (
@@ -41,6 +44,7 @@ export default function Projects() {
               </Link>
             )}
           </div>
+          </LoadingContent>
           {atLimit && <p className="projects-limit">You’ve reached the limit of five projects for your account.</p>}
         </main>
       )}

@@ -107,8 +107,8 @@ measurements, shares and table values. At narrow widths the page headline is
 
 ## Layout
 
-Sticky navigation fills the viewport height, normally (236px) wide, beside a white
-header (77px) tall. Report content is capped at (1540px), with desktop horizontal
+The full-width brand header is (64px) tall and stays above the project workspace.
+Sticky navigation starts below it, normally (236px) wide. Report content is capped at (1540px), with desktop horizontal
 padding (38px). Panels use a (22px) gap. Overview has a sample-data disclosure,
 four-column metric strip, activity plot with a (284px) connection rail, then two
 breakdown panels.
@@ -184,6 +184,21 @@ and focus (#3fd6c9), navy accent (#0b2757), and borders (#123370).
 
 The theme defaults to the system preference and persists explicit selection under
 `lumen-radar-dashboard-theme`. Appearance controls are available on login, in the
-account header, and in the sidebar, including its collapsed and mobile forms.
+account header, including the full-width project workspace header.
 Brand assets switch from navy to white in dark mode. Fixed navy artwork panels
 keep white artwork and text in both modes.
+
+## Project workspace
+
+The project detail page groups the date selector and refresh control with Website
+activity. A single page-view measure sits beside an explicit loading, setup, empty,
+error, or recorded-traffic state. Installation and its accordion guide share a
+24px two-column grid above 1100px and stack below it. At 640px, the activity
+summary stacks and controls remain touch accessible. The project selector is the
+first item in the sidebar and stays usable as an icon when the sidebar collapses.
+Its menu includes All projects. Existing sidebar navigation and Coming soon states
+remain intact. The full-width header contains the brand, appearance control, and
+account menu. Open website sits beside the website introduction in the content.
+The script toolbar uses Animate UI's copy icon feedback and buttons, while the
+existing Animate UI accordion and project dialogs retain their keyboard behavior
+and the provider's reduced-motion preference. No traffic data is fabricated.
