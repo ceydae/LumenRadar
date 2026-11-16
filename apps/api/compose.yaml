@@ -4,14 +4,18 @@ services:
   postgres:
     image: postgres:17-bookworm
     restart: always
+    command: ["postgres", "-p", "${POSTGRES_PORT:-5431}"]
     environment:
+      PGPORT: ${POSTGRES_PORT:-5431}
       POSTGRES_USER: ${POSTGRES_USER:-lumen_radar}
       POSTGRES_DB: ${POSTGRES_DB:-lumen_radar}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5431}:${POSTGRES_PORT:-5431}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p \"$$PGPORT\" -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -34,7 +38,7 @@ services:
       DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET:-}
       UMAMI_API_URL: ${UMAMI_DOCKER_API_URL:-http://umami:3000/api}
       UMAMI_API_KEY: ${UMAMI_API_KEY:-}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-lumen_radar}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/${POSTGRES_DB:-lumen_radar}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-lumen_radar}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:${POSTGRES_PORT:-5431}/${POSTGRES_DB:-lumen_radar}
     ports:
       - "127.0.0.1:${PORT:-3051}:3051"
     depends_on:
