@@ -1,0 +1,48 @@
+---
+title: Projects
+description: Create, find, and switch between the workspaces for your Stellar projects.
+---
+
+Use a project to keep the identity and website of one Stellar application together. A clear name and the correct domain make it easier to return to the right workspace and prepare a tracking integration without mixing up applications.
+
+## Decide what belongs in a project
+
+Start with the application or website you want to understand. The website URL should identify that site's actual address, rather than an unrelated organization page or an API request URL.
+
+For example, if you want to measure how people use a wallet at `https://wallet.example.com`, associate that address with the project. If you are interested in the documentation at `https://docs.example.com`, decide which site you intend to measure before creating the project. Do not assume that registering a parent domain automatically installs tracking on its subdomains.
+
+A project and a tracking installation serve different purposes. The project records what you are working on; a script must run on the website before browser activity can be sent. Read [Website tracking](/website-tracking) when you are ready to prepare that change.
+
+## Create another project
+
+1. Return to the project list.
+2. Start creating a project.
+3. Enter its name, website URL, and Stellar description.
+4. Continue to data sources and select website analytics.
+5. Finish setup, then check the name and domain in the opened workspace.
+
+Use [Getting started](/getting-started#2-enter-the-project-details) for advice on each field. Review the details before the final submission, particularly if two projects have similar names.
+
+If creation fails, check whether the project already appears in your list before submitting it again. A completed project should be reopened rather than recreated. See [project-creation troubleshooting](/troubleshooting#i-cannot-finish-creating-a-project) for help with validation and connection problems.
+
+## Find and open a project
+
+Open the project list and choose the project by its name and domain. If you followed an old bookmark and cannot open the workspace, return to the list and open it from there. This helps you check whether the project is available to the account you are using.
+
+After opening a project, confirm its website address before working on tracking. Use the website link to open the associated site. Following that link visits the website; it does not connect tracking or prove that data is being collected.
+
+## Switch between projects
+
+When you have multiple projects, use the project selector in the workspace header to choose another one. You can also return to the full project list and open a different project.
+
+After switching, check both the project name and domain. If you already have tracking configuration, keep each snippet with its own project. Reusing a website identifier from another project's snippet can send activity to the wrong destination.
+
+## Correct details before finishing setup
+
+During project creation, return to the details step if the name, URL, or Stellar description needs a correction. Review the revised summary before saving.
+
+Editing saved project details and deleting projects are not available through the dashboard yet. If an existing project has the wrong website address, note the intended correction before asking for help. Creating additional projects is not a way to move an existing tracking installation or its history.
+
+## Keep project records separate from measurement
+
+Reopening a project successfully confirms that your workspace is accessible. It does not confirm that a tracker is installed. Use [Understanding your analytics](/understanding-your-analytics) to decide what evidence you have, and use [verification](/website-tracking/verification) only after a script has actually been published.

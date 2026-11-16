@@ -1,0 +1,41 @@
+---
+title: Preparing your website
+description: Confirm your project, domain, page coverage, and publishing access before installing tracking.
+---
+
+Prepare the website before editing its code. The important decisions are which site belongs to the project, which pages you want to measure, and how the script will reach those pages.
+
+## 1. Confirm the project and website
+
+Open your project in the dashboard and check its name and domain. Follow the website link and confirm that it opens the intended site. If you have not created a project yet, complete [Getting started](/getting-started) first.
+
+Check the address after redirects have finished. For example, visitors may enter `https://example.com` but arrive at `https://www.example.com`. Record the final hostname. A tracker restricted to `example.com` will not send activity from `www.example.com` unless that hostname is included too.
+
+Choose the production site you intend to measure. Preview deployments and development copies can share the same application code, so consider whether a shared layout will put the tracker on those copies as well. The optional hostname restriction in the [installation guide](/website-tracking/installation#restrict-tracking-to-the-intended-site) helps you control where it sends activity.
+
+## 2. Decide which pages to cover
+
+Make a small list of representative pages to check after publishing. Include the homepage, an important content or product page, and a page visitors reach through application navigation.
+
+| Website structure | Where to prepare the installation |
+| --- | --- |
+| Several HTML pages | A common template, or each page if no template is shared |
+| A framework application | The shared document or application layout used across routes |
+| A content-management system | A site-wide custom-code or header setting that permits external scripts |
+| A single-page application | The application shell, loaded once for the whole application |
+
+Include only pages that should belong to this project's measurement. If some pages use a different template or run on another hostname, note that explicitly. Installing a script on the homepage alone does not cover separately rendered pages.
+
+## 3. Arrange access to publish
+
+Identify the person who can change and deploy the website. They need access to the appropriate template or site setting and a way to verify the published result. Saving a local file or a draft in a site editor does not make the tracker available to visitors.
+
+If your website controls which external scripts and network requests are allowed, ask the person maintaining those rules to review the supplied tracking host before publication. Keep existing site protections in place and allow only what the integration needs.
+
+## 4. Obtain the project's tracking configuration
+
+Installation needs two values: the complete tracking-script URL and the website identifier that routes activity to your project. Use configuration supplied for that project; do not derive either value from its name or dashboard address.
+
+**The dashboard does not yet provide these values or complete tracking setup.** If you do not already have valid configuration, stop here. Your project can remain saved while installation is unavailable. There is no additional dashboard setup action you can take to obtain the missing values.
+
+If you already have valid configuration, continue with [Installing the tracker](/website-tracking/installation). You are ready for that guide when you know the intended hostname, where the script belongs, and how the website change will be published.

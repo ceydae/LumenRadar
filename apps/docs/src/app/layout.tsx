@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://docs.lumenradar.com'),
   title: { default: 'Lumen Radar Docs', template: '%s - Lumen Radar Docs' },
   applicationName: 'Lumen Radar Docs',
-  description: 'Learn your way around Lumen Radar, web and API analytics for Stellar projects.',
+  description: 'Create your Stellar project in Lumen Radar, prepare website tracking, and learn how to verify your installation.',
   icons: {
     icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }, { url: '/favicon.ico', sizes: 'any' }],
     apple: '/apple-touch-icon.png',

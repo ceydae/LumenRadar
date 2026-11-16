@@ -1,0 +1,89 @@
+---
+title: Troubleshooting
+description: Resolve sign-in, project setup, and website-tracking problems using the symptoms you can see.
+---
+
+Start with the task that failed. Check whether you are trying to sign in, save a project, obtain tracking configuration, or verify an installed script. Each has a different next step; repeatedly creating a project will not fix a website installation.
+
+## I cannot sign in
+
+1. Open Dashboard from the documentation header and start sign-in again.
+2. Complete the process and allow it to return you to Lumen Radar.
+3. Check your network connection if the page cannot complete the request.
+4. If sign-in remains unavailable, wait before trying again and record when the problem occurred.
+
+If you cancelled or closed sign-in before returning to Lumen Radar, start again from the dashboard. A successful result is reaching your project list. You do not need to enter tracking configuration or website code to sign in.
+
+## My project list will not load
+
+Check that the dashboard itself is reachable and your connection is working. Retry loading the project list. If you are asked to sign in again, complete sign-in and return to the list.
+
+A loading problem is not evidence that your projects were deleted. Avoid creating replacements until the list loads and you can check what is saved. If the problem continues, note whether all projects are affected or only one project link.
+
+## I cannot finish creating a project
+
+Review the details before submitting:
+
+- Enter a recognizable project name rather than spaces alone.
+- Use a complete website URL beginning with `https://` or `http://`.
+- Explain how the project uses Stellar, keeping the description concise.
+- Select website analytics as the available data-source path.
+
+Return to the details step to correct a field, then finish the data-source step. If a connection problem interrupts the final submission, check the project list before trying again. If the project is already present, open it instead of creating a duplicate.
+
+If the dashboard says your account cannot create another project, you have reached the available project capacity. Repeated submission will not resolve that. Deleting projects is not available through the dashboard, so record the message and ask for help with the account rather than looking for a deletion step in these guides.
+
+## I cannot find or open a saved project
+
+Return to the project list and check the names and domains. Confirm that you signed in with the account used to create the project. A project available to one account may not be available when you sign in with another.
+
+If the project appears in the list, open it from there rather than using an old bookmark. If it does not appear and creation was interrupted, you may not have completed the final setup step. Follow [Getting started](/getting-started) to review that process before starting again.
+
+## The project has the wrong website address
+
+If you are still creating the project, return to the details step and correct the URL before finishing. Open the intended website separately to check its final hostname after redirects.
+
+For a saved project, changing details is not supported in the dashboard yet. Keep a note of the existing project and intended website address when asking for help. Do not reuse another project's tracking configuration to compensate for an incorrect address.
+
+## I cannot find a tracking script or website identifier
+
+The dashboard does not yet supply the configuration required for installation. Saving a project does not generate a script you can copy from the workspace. Complete [Preparing your website](/website-tracking/setup) and stop before editing your site if you do not already have valid configuration.
+
+Do not substitute the dashboard URL or project name for the missing values. The [installation guide](/website-tracking/installation#understand-the-configuration) explains what each value means for readers who already have valid configuration.
+
+## My installed tracker is not sending activity
+
+Use this checklist only after publishing a script with valid configuration:
+
+| Symptom | What to check | Useful next action |
+| --- | --- | --- |
+| No tracker element in the live page | The template or custom-code setting and the published version | Publish the installation in the layout used by that page |
+| Script request fails | The complete supplied URL, browser blocking, and site security rules | Correct the URL or have the website maintainer review the blocked request |
+| Script loads but sends no activity | Website identifier, hostname restriction, and intended tracking preferences | Compare the published attributes with the supplied configuration |
+| Homepage works but other pages do not | Different templates and direct visits to nested routes | Include the tracker in the shared layout covering those pages |
+| Activity sends only on the first page load | The application's navigation and whether the URL changes | Check a direct visit and an internal navigation separately |
+| One deliberate action sends duplicate activity | Repeated script tags and manual pageview calls | Keep one installation and avoid duplicating automatic pageviews |
+
+Follow [Verifying the installation](/website-tracking/verification) for the full sequence. Keep your check focused on the intended production hostname, especially if the same application code is used on preview deployments.
+
+## The script loads on a preview but sends nothing
+
+If `data-domains` restricts tracking to production, this can be the intended result. The restriction checks the current hostname when sending activity; it does not prevent the script file from loading.
+
+Visit an allowed hostname to verify the production installation. Do not add preview hostnames just to make a test send activity unless you intend to include those visits.
+
+## I cannot see analytics after creating a project
+
+Dashboard reports are not available yet. Creating a project confirms the workspace is saved; it does not install a tracker or establish a traffic total. Waiting or refreshing the workspace will not complete the missing installation step.
+
+If you already have a valid installation, browser verification can establish whether the script loads and sends activity. It cannot establish a dashboard total. Read [Understanding your analytics](/understanding-your-analytics) before interpreting missing results as zero visits.
+
+## I cannot select API tracking
+
+API tracking and the combined website-and-API path are unavailable. There is no dashboard integration to finish and no service configuration to apply. See [API tracking](/api-tracking) to decide whether website tracking addresses any part of your requirement.
+
+## Useful information when asking for help
+
+Describe the task, the project name, and the website hostname. Include the approximate time, the step that failed, and whether retrying changed the result. For an installed tracker, note whether the script was present, loaded successfully, and sent a request.
+
+Share only the relevant message or request details. Exclude account credentials and unrelated information from screenshots or network logs. This keeps the handoff focused on the problem someone needs to investigate.

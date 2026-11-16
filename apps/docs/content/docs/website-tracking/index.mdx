@@ -1,0 +1,30 @@
+---
+title: Website tracking
+description: Prepare your site for tracking and understand the steps from installation to verification.
+---
+
+Website tracking measures activity in the browsers of people visiting your site. A tracking script loads with a page and sends pageview events as visitors open pages and navigate your application. This is the path to use for a project website, documentation site, or browser application.
+
+**Installation availability:** the dashboard lets you create a website project, but does not yet provide its tracking script or configuration. Creating the project does not start collection. You can complete the preparation guide now; installation requires valid tracking configuration for that project.
+
+## Follow the installation path
+
+Work through these guides in order:
+
+1. [Prepare your website](/website-tracking/setup). Confirm the domain, decide which pages to cover, and identify how your site is published.
+2. [Install the tracker](/website-tracking/installation). Use your project's supplied script URL and website identifier, add the script to a shared page layout, and publish the change.
+3. [Verify the installation](/website-tracking/verification). Open the published site, check that the script loads and sends activity, and distinguish a successful browser check from a reported measurement.
+
+You do not need to add code while you are only preparing a project. If another developer publishes the website, give them the installation guide along with the intended production domain and the pages you want to cover.
+
+## How website analytics fits together
+
+Lumen Radar uses **Umami**, an open-source web analytics platform, for its website analytics. Umami supplies the browser tracker, event collection, and pageview counting. Using this existing analytics foundation gives Lumen Radar those capabilities while organizing the work around Stellar projects. You do not need a separate analytics-service account or administration workflow to prepare your Lumen Radar project.
+
+The script has to run on the pages you want to measure. Entering a website URL in your project does not add code to that website. A shared layout is usually the best place to include the tracker because it covers multiple pages with one installation.
+
+## Set the right expectations
+
+Browser tracking only covers activity where the script can run and send a request. It does not measure calls made directly to your API by another application. See [API tracking](/api-tracking) if your question concerns service traffic.
+
+Lumen Radar does not yet provide dashboard analytics reports. Use [Understanding your analytics](/understanding-your-analytics) to learn what installation checks establish and why an unavailable report must not be read as zero traffic. If an installed script does not behave as expected, start with [verification](/website-tracking/verification).

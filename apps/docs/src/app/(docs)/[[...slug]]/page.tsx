@@ -9,7 +9,7 @@ export default async function Page({ params }: Props) {
   if (!page) notFound();
   const MDX = page.data.body;
   return (
-    <DocsPage toc={page.data.toc} breadcrumb={{ enabled: false }} className="reading-page">
+    <DocsPage toc={page.data.toc} breadcrumb={{ enabled: true }} className="reading-page">
       <DocsTitle className="reading-title">{page.data.title}</DocsTitle>
       <DocsDescription className="reading-description">{page.data.description}</DocsDescription>
       <DocsBody className="reading-body"><MDX components={getMDXComponents()} /></DocsBody>

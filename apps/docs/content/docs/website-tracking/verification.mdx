@@ -1,0 +1,65 @@
+---
+title: Verifying the installation
+description: Check the published script, page coverage, and tracking requests without confusing installation with reporting.
+---
+
+Verify the published website after installing a tracker with valid project configuration. These checks help you locate a problem in the page, script loading, or outgoing tracking requests.
+
+If you have only created a project, there is no installation to verify yet. Start with [Preparing your website](/website-tracking/setup). Dashboard analytics reports are not available, so a browser check is the available way to inspect an existing installation; it is not confirmation of a reported total.
+
+## 1. Open the published website
+
+Use a normal browser and open the actual website visitors use. Note the hostname after redirects finish. If you configured `data-domains`, this hostname must be in the allowed list.
+
+Choose a page covered by the installation, then open your browser's developer tools. Select the **Network** tab before reloading the page so you can see the requests made during a fresh load. Keep the page open while checking the results.
+
+Use a manual visit for this check. An automated crawler or headless browser can behave differently from a visitor and may be filtered from collection.
+
+## 2. Confirm the script is present
+
+Inspect the published page and find the tracker script element. Check that:
+
+- Its `src` matches the complete supplied tracking-script URL.
+- Its `data-website-id` matches the configuration for the intended project.
+- No placeholder values remain.
+- The script is included once for that website.
+- Any `data-domains` restriction includes the hostname you are visiting.
+
+If the tag is absent, revisit where you installed it and whether that change was published. Check a second page too: if the tracker exists only on the homepage, it may have been added to a page-specific template rather than the shared layout.
+
+## 3. Confirm the script loads
+
+In Network, find the request matching the script's `src`. With the standard script name, you can filter for `script.js`.
+
+The browser should load JavaScript successfully from that address. A successful response containing an HTML error page or sign-in page is not a working script. Look for blocked or failed requests and related messages in the browser console.
+
+If the script does not load:
+
+1. Compare the published URL with the supplied configuration, including the protocol and path.
+2. Check whether a browser extension blocked the request. For your own verification, you can use a browser profile without that extension.
+3. Check whether your website's content security policy blocks the tracking host. Ask the website maintainer to allow the required script and tracking requests.
+4. On an HTTPS website, confirm that the supplied script uses HTTPS as well.
+
+Do not replace the script address with the dashboard URL. They serve different purposes.
+
+## 4. Check for outgoing activity
+
+After the script loads, look for a tracking request to the tracking host. With the standard tracker configuration, this is a `POST` request whose path ends in `/api/send`. You are observing the script's request, not making a separate setup request yourself.
+
+Confirm that the request is not blocked or failing. A request visible in Network confirms that the browser attempted to send activity. A successful response is useful delivery evidence, but it does not establish a dashboard measurement or tell you the final reported count.
+
+If the script loads but sends nothing, check the hostname restriction first. Also check whether the supplied configuration intentionally disables automatic tracking or honors a browser tracking preference. Preserve the site's intended consent and tracking rules while investigating.
+
+## 5. Check page coverage and navigation
+
+Repeat the check on a second page. For a single-page application, open a nested route directly and then navigate through an internal link that changes the URL. Confirm that the tracker remains loaded and sends activity for the navigation you intend to measure.
+
+If the initial load works but navigation does not, record the starting URL, destination URL, and whether the browser performed a full page load. The tracker observes History API URL changes; a UI change that leaves the URL unchanged is not automatically another pageview.
+
+If activity appears more than once for one deliberate action, inspect the page for duplicate script tags or additional manual pageview calls. Fix duplicate installation before drawing conclusions about traffic.
+
+## Record the result
+
+Keep the page URL, approximate time of the check, and whether the script loaded and sent a request. This provides a useful handoff if someone else needs to investigate. Avoid sharing account credentials or unrelated browsing information from developer tools.
+
+Use [Understanding your analytics](/understanding-your-analytics) to interpret what these checks establish. For a symptom-based checklist, continue to [Troubleshooting](/troubleshooting#my-installed-tracker-is-not-sending-activity).

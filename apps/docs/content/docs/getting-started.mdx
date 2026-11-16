@@ -1,16 +1,59 @@
 ---
 title: Getting started
-description: Give your project a home in Lumen Radar.
+description: Sign in, create your project, and choose the right tracking path for your application.
 ---
 
-Open **Dashboard** in the header to begin. Use the sign-up or sign-in screen, then continue through the two setup steps. The current dashboard keeps your workspace in this browser; it does not yet provide server-backed accounts.
+Create a project to give your team a recognizable workspace for its Stellar application. You will enter the project's details, select website analytics, and confirm that you can reopen the saved project.
 
-## Add your project
+## Before you start
 
-Enter a project name, a full website URL, and a short description of how your project uses Stellar. Choose **Continue to data sources** to save these details.
+Have the following ready:
 
-## Choose what to measure
+- **A project name** that you will recognize in your project list.
+- **The website URL** for the site or web application associated with the project. Use a complete address, such as `https://example.com`.
+- **A short description of your Stellar integration.** Explain what your application does with Stellar in plain language.
 
-Select **Website analytics**, **API analytics**, or **Both**. If you include API analytics, add an API service name. Choose **Open workspace** to reach your project overview.
+You can create a project without changing your website. To install tracking later, you will also need permission to edit and publish the site's HTML, shared layout, or custom-code settings. If another person manages deployment, involve them before scheduling installation.
 
-Selecting a source prepares your workspace; it does not start collecting activity. See [Data sources](/data-sources) for the meaning of each connection status.
+## 1. Sign in
+
+Open **Dashboard** from the documentation header and sign in. Complete the sign-in process and return to Lumen Radar. On your first visit, your account is created as part of signing in.
+
+Use the same account when returning to your projects. If you have signed in before, check the existing project list before creating another project for the same website. This avoids confusion about which workspace you intend to use.
+
+**Check your result:** you can open your project list. If sign-in does not finish, follow [sign-in troubleshooting](/troubleshooting#i-cannot-sign-in).
+
+## 2. Enter the project details
+
+Start creating a project from the project list. Fill in all three details:
+
+| Detail | What to enter | Why it matters |
+| --- | --- | --- |
+| Project name | The name your team uses for the application or service | Helps you identify the right workspace |
+| Website URL | The full address of the website you intend to associate with the project | Establishes the site's domain and gives you a way to open it from the workspace |
+| Stellar description | A concise explanation of how the project uses Stellar | Gives the project context beyond its name and address |
+
+For a wallet, a useful description might be: “A web wallet for sending and receiving assets on Stellar.” For a developer tool: “Documentation and tools for teams building payment integrations on Stellar.” Describe your own project's actual use of Stellar.
+
+Use the final website address that visitors reach. Open it in a browser first and check whether it redirects, for example from `example.com` to `www.example.com`. That distinction matters when you later restrict tracking to a hostname.
+
+Continue to the data-source step. If you spot a mistake in the summary, go back and correct it before finishing.
+
+## 3. Select a tracking path
+
+Select **Website analytics** to create a website project. This is the available project path. API tracking and the combined website-and-API option cannot be selected yet.
+
+Choose based on what your application does:
+
+- For a public website, documentation site, or browser application, prepare [website tracking](/website-tracking).
+- For requests to a service used by developers or other applications, read [API tracking](/api-tracking) before planning an integration. Creating a website project does not enable API measurements.
+
+Finish the setup to save the project and open its workspace. Entering the details alone does not complete project creation.
+
+## 4. Confirm the project is saved
+
+Check the project name and domain in the workspace. Use the website link to confirm that you associated the intended site. Return to the project list and reopen the project; finding it there confirms that creation completed.
+
+You have now prepared the project. This does not install tracking or start collecting visits. The dashboard does not yet provide the script configuration needed for website installation, so you can stop here without changing your site.
+
+Continue with [Preparing your website](/website-tracking/setup) to identify where a tracker would belong and who will publish it. When valid configuration is available for your project, [Installing the tracker](/website-tracking/installation) explains the code and publishing steps.

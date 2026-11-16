@@ -1,18 +1,35 @@
 ---
 title: Introduction
-description: Understand how your Stellar project is used.
+description: Organize your Stellar project and prepare to understand its website activity and API usage.
 ---
 
-Lumen Radar brings website activity and API usage into one workspace for Stellar projects. It is being built to help teams understand adoption, follow usage trends, and see how their services are used.
+Lumen Radar helps teams in the Stellar ecosystem organize their projects around the places people use them: websites and APIs. Use your project workspace to establish what you want to measure and which website belongs to your project, then prepare the appropriate tracking integration.
 
-## One project, two signals
+These guides are for the people managing a project in the dashboard and the developers connecting tracking to a website or application. You do not need to administer an analytics service to create a project. Installing website tracking requires access to your site's code or publishing settings.
 
-**Web analytics** focuses on visitors, page views, popular pages, and traffic sources. **API analytics** focuses on request volume, response status, and latency.
+## Start with a project
 
-A project gives these two signals a shared home. Start by adding your project details, then choose website analytics, API analytics, or both.
+A project gives your work a name, a website address, and a short description of how it uses Stellar. For example, a wallet team might register its web application and explain how it helps people manage Stellar assets. A developer-tool team might register its documentation website and describe the services it provides to builders.
 
-## Where to begin
+Choose details that help you recognize the project when you return. If you manage several projects, check the name and domain before working on an integration. Tracking configuration must belong to the project you intend to measure.
 
-Follow [Getting started](/getting-started) to create your workspace, then explore the [project overview](/project-overview).
+Follow [Getting started](/getting-started) to create your first project, or use [Projects](/projects) to find and switch between existing projects.
 
-Lumen Radar is in active development. Project setup is available today; live data collection is not connected yet. New workspaces begin with empty reports.
+## Choose the activity you want to understand
+
+Website activity and API usage answer different questions:
+
+| Your question | Tracking path | Where measurement happens |
+| --- | --- | --- |
+| Are people opening and navigating my website? | [Website tracking](/website-tracking) | In the visitor's browser, through a script on your site |
+| How often do applications call my service, and how do those requests perform? | [API tracking](/api-tracking) | At the service handling the requests |
+
+A visit to your website does not measure every request made to your API. Equally, a service request does not tell you whether someone opened your homepage. Choose a path based on the question you need to answer, rather than treating the two kinds of activity as interchangeable.
+
+## Work through setup in order
+
+Creating a project saves its details; collecting activity requires a separate tracking installation. At present, you can create and reopen website projects in the dashboard. Website installation configuration and analytics reports are not yet available there, and API tracking is unavailable. You can prepare your project and website without changing your live application.
+
+The website guides take you through [preparation](/website-tracking/setup), [script installation](/website-tracking/installation), and [verification](/website-tracking/verification). The installation steps apply once you have valid tracking configuration for your project; they explain where code belongs and how to check a published change.
+
+Use [Understanding your analytics](/understanding-your-analytics) to distinguish a saved project from a verified measurement. If you get stuck, [Troubleshooting](/troubleshooting) starts with the problem you can see and helps you choose the next useful action.

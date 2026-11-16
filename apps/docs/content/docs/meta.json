@@ -1,9 +1,13 @@
 {
   "title": "Documentation",
+  "defaultOpen": true,
   "pages": [
     "index",
     "getting-started",
-    "project-overview",
-    "data-sources"
+    "projects",
+    "website-tracking",
+    "api-tracking",
+    "understanding-your-analytics",
+    "troubleshooting"
   ]
 }

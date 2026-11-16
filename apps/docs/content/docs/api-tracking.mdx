@@ -1,0 +1,33 @@
+---
+title: API tracking
+description: Understand when to measure API traffic and how that differs from tracking website visits.
+---
+
+API tracking concerns requests made to your application's services. It helps answer questions about service usage and the experience of applications calling your API, rather than the pages someone opens in a browser.
+
+**API tracking is not available in Lumen Radar yet.** There is no supported dashboard integration to complete, so you do not need to change your service configuration for Lumen Radar at this stage.
+
+## Decide whether you need API tracking
+
+Consider where the activity happens. A developer may call your service from a backend application without ever visiting your website. A wallet or application may make many service requests during one browser visit. Those requests and that visit describe different aspects of usage.
+
+| Activity you want to understand | Appropriate path |
+| --- | --- |
+| Someone opens your project's homepage or documentation | [Website tracking](/website-tracking) |
+| A visitor moves between pages of a browser application | Website tracking on the application |
+| Another application calls your service directly | API tracking |
+| You want to understand both the website and the service | Separate measurement for each kind of activity |
+
+Installing the website script does not turn it into an API traffic monitor. Likewise, registering an API address as a project's website URL does not instrument the service.
+
+## Prepare a useful measurement question
+
+You can decide what you need to learn before an integration is available. Start with one concrete question, such as whether developers are using a particular service or whether callers experience failed requests. Record which service and environment the question concerns so that production traffic is not confused with development activity.
+
+Request volume, response outcomes, and response time are different ways to reason about service traffic. They are not available Lumen Radar dashboard metrics, and this guide does not provide an exporter, credential, or collection address for them.
+
+## Continue with your project
+
+If your application also has a website, you can [create a website project](/getting-started) and prepare that tracking path independently. You do not need to wait for API tracking to organize the website project, but creating it does not reserve or activate an API connection.
+
+If your immediate requirement is API measurement only, stop before changing your service. The dashboard does not offer a supported API setup path. Use your existing service-monitoring arrangements for that work while Lumen Radar API tracking is unavailable.

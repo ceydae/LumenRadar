@@ -1,0 +1,81 @@
+---
+title: Installing the tracker
+description: Place your project's tracking script in the website layout, publish it, and check the installation.
+---
+
+Add the tracker once to the shared layout of the website you want to measure. This lets the script run on the pages using that layout without adding a separate integration to every page.
+
+**Before using this guide:** you need valid tracking configuration for your project. The dashboard does not yet supply the script URL or website identifier. If you do not have them, complete [Preparing your website](/website-tracking/setup) and leave your website unchanged until configuration is available.
+
+## What you need
+
+- The project and website you intend to measure.
+- The complete script URL and website identifier supplied for that project.
+- Access to the website's HTML, shared layout, or site-wide custom-code setting.
+- Permission to publish the change and inspect the live website afterward.
+
+Keep the supplied values together. A script can load successfully while using an identifier for the wrong website, so checking the URL alone is not enough.
+
+## Understand the configuration
+
+| Value | What it means | What to use |
+| --- | --- | --- |
+| `src` | The address from which visitors load the tracker | The complete supplied script URL, including its path |
+| `data-website-id` | The identifier that directs activity to the correct website | The website identifier supplied for this project |
+| `defer` | Lets the browser download the script without blocking HTML parsing | Keep this attribute in the script tag |
+| `data-domains` | An optional restriction on the hostnames allowed to send activity | A comma-separated list of exact hostnames you intend to track |
+
+The website identifier is tracking configuration, not your project name or website URL. Use the supplied identifier exactly. You do not need to put account credentials or a service-administration key in your site's HTML.
+
+## Add the script to HTML
+
+The example below shows the supported script format. **It is a template, not a working project configuration.** Replace `YOUR_TRACKING_HOST` and `YOUR_WEBSITE_ID` with your supplied values. If the supplied script URL has a different path, use that complete URL for `src`.
+
+```html
+<script
+  defer
+  src="https://YOUR_TRACKING_HOST/script.js"
+  data-website-id="YOUR_WEBSITE_ID"
+></script>
+```
+
+Place the tag inside the `<head>` of the page or shared page template. For a site without shared templates, add it to each page you want to measure. Keep only one tracker installation for the same website on each page.
+
+Do not paste the tag into an article body or a code block that visitors can read. It must become an executable script element in the published page. Some site editors remove scripts from ordinary content fields; use the site's supported custom-code setting instead.
+
+## Use a shared application layout
+
+For a framework application, add the tracker through the shared document or root layout, following the framework's supported method for external scripts. The aim is to load it once for the application, including visits that start on a nested route.
+
+Check these cases before publishing:
+
+1. Opening the homepage includes the script.
+2. Opening a nested URL directly includes the script.
+3. Navigating between routes does not insert another copy of the script.
+
+The tracker automatically records an initial pageview and observes URL changes made through the browser's History API. Ordinary client-side navigation using that API does not need an additional manual pageview call. Avoid adding manual tracking calls alongside automatic pageviews, since that can duplicate activity. Verify your application's navigation rather than assuming all routing patterns behave alike.
+
+## Restrict tracking to the intended site
+
+If the same code is published to previews or development sites, you can limit where it sends activity with `data-domains`:
+
+```html
+<script
+  defer
+  src="https://YOUR_TRACKING_HOST/script.js"
+  data-website-id="YOUR_WEBSITE_ID"
+  data-domains="example.com,www.example.com"
+></script>
+```
+
+Replace the two placeholders as in the first example. Replace `example.com,www.example.com` with the exact hostnames you want to include. Enter hostnames without `https://`, a path, or a port. Include `www` or other subdomains individually if visitors use them; naming a parent domain does not automatically include its subdomains.
+
+This option restricts sending activity; it does not prevent the browser from downloading the script. A preview site may therefore load the file successfully and send no activity because its hostname is outside the allowed list. That is expected when you have intentionally restricted tracking to production.
+
+## Publish the change
+
+Save the website change and publish it using your normal deployment process. Open the live site after publication and confirm that the script element contains the supplied values, with no remaining placeholders.
+
+For sites that generate static pages, publish the generated output containing the updated template. For site editors, make sure the custom-code change has been published rather than left as a draft. If a cache still serves the old HTML, use your site's normal publishing or cache-refresh process before investigating the tracker.
+
+A successful publication makes the script available on the intended pages. It does not by itself prove that requests are arriving or that a report is available. Continue with [Verifying the installation](/website-tracking/verification) to check the live browser behavior.

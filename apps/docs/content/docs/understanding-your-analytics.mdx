@@ -1,0 +1,47 @@
+---
+title: Understanding your analytics
+description: Distinguish project setup, tracking delivery, and measured activity so you can interpret results correctly.
+---
+
+Before drawing a conclusion about usage, check what you have actually verified. A saved project, a published script, and a measured pageview are separate results. Treating them separately helps you investigate the right problem and avoid interpreting incomplete setup as a lack of users.
+
+## Recognize each stage
+
+| Evidence | What you can conclude | What still needs checking |
+| --- | --- | --- |
+| You can reopen the project from your project list | The project is saved and available to your account | Tracking configuration and installation |
+| The tracker is present in the published page | The website includes the installation code | Whether the browser loads and runs it |
+| The browser loads the tracker successfully | The script is reachable from that browser | Whether it sends activity with the intended configuration |
+| The browser sends a tracking request successfully | That visit can reach the tracking destination | Whether the activity is included in a report for the correct project |
+
+Dashboard analytics reports are not available yet. There are no dashboard totals, charts, date filters, or traffic breakdowns to interpret. The project workspace is a place to prepare tracking; opening it is not evidence that collection has started.
+
+## Understand a pageview
+
+A pageview is a recorded page-view event. The website tracker sends an initial pageview when it runs and can send further pageviews for client-side URL changes. Reloading a page can produce another pageview even if the same person is still using the site.
+
+For example, one person opening the homepage, navigating to a second tracked page, and reloading that page can produce three pageviews. That is a count of page activity, not three different people.
+
+Pageviews do not by themselves establish how many people use a Stellar application, whether a wallet connected, or whether a transaction succeeded. Those are different questions. Do not treat loading a page as proof of a completed action within the application.
+
+This definition helps you check tracker behavior. It does not imply that a pageview report is available in the dashboard. There are no additional dashboard metrics to retrieve through a separate customer setup step.
+
+## Consider what the installation covers
+
+A browser tracker can only send activity from pages where it is installed and allowed to run. When assessing coverage, ask:
+
+- Does the shared template cover all the pages you intended to measure?
+- Do direct visits to nested routes load the tracker?
+- Are the production hostname and any intended subdomains included in the domain restriction?
+- Could browser blocking or the site's tracking preferences prevent activity from being sent?
+- Is the tracker included more than once, or are manual pageview calls duplicating automatic activity?
+
+These questions explain why a script-loading check is useful but incomplete. Use [Verifying the installation](/website-tracking/verification) to check the full browser path.
+
+## Separate missing results from zero activity
+
+An unavailable report is not a zero. Neither is a saved project without an installed tracker. In both cases, you lack a measurement from which to judge traffic.
+
+If you already have a tracker installed, keep the installation evidence separate from conclusions about adoption. A successful manual visit verifies one browser path; it does not establish coverage for every visitor, page, or device.
+
+For now, use Lumen Radar to organize the project and prepare the integration. If you need help deciding why activity cannot be verified, start with [Troubleshooting](/troubleshooting). If your question is about service requests rather than page activity, read [API tracking](/api-tracking).
