@@ -11,7 +11,12 @@ const project = {
 
 test("analytics contract and setup recovery", async (t) => {
   const originalFetch = globalThis.fetch;
-  t.after(() => { globalThis.fetch = originalFetch; });
+  const originalUmamiUrl = process.env.NEXT_PUBLIC_UMAMI_URL;
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+    if (originalUmamiUrl === undefined) delete process.env.NEXT_PUBLIC_UMAMI_URL;
+    else process.env.NEXT_PUBLIC_UMAMI_URL = originalUmamiUrl;
+  });
 
   await t.test("all-time omits timestamps; relative ranges use the request's current time", () => {
     assert.equal(analyticsPath(project.id, "all"), `/${project.id}/analytics`);
@@ -82,6 +87,17 @@ test("analytics contract and setup recovery", async (t) => {
   });
 
   await t.test("tracking snippet uses the public URL and returned website ID", () => {
-    assert.equal(trackingSnippet(project.id), `<script defer src="http://localhost:3054/script.js" data-website-id="${project.id}"></script>`);
+    process.env.NEXT_PUBLIC_UMAMI_URL = "https://analytics.example.com/tracker/";
+    assert.equal(trackingSnippet(project.id), `<script defer src="https://analytics.example.com/tracker/script.js" data-website-id="${project.id}"></script>`);
+    process.env.NEXT_PUBLIC_UMAMI_URL = "https://metrics.example.org";
+    assert.equal(trackingSnippet(project.id), `<script defer src="https://metrics.example.org/script.js" data-website-id="${project.id}"></script>`);
+  });
+
+  await t.test("missing public URL never falls back to localhost", () => {
+    for (const value of [undefined, "", "   "]) {
+      if (value === undefined) delete process.env.NEXT_PUBLIC_UMAMI_URL;
+      else process.env.NEXT_PUBLIC_UMAMI_URL = value;
+      assert.throws(() => trackingSnippet(project.id), /NEXT_PUBLIC_UMAMI_URL must be set/);
+    }
   });
 });

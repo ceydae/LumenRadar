@@ -94,6 +94,15 @@ in browser storage. API or OAuth failures appear with a retry option.
 
 ## Development
 
+The installation script uses `NEXT_PUBLIC_UMAMI_URL` from the dashboard environment.
+Copy `.env.example` to `.env.local` for local development. For deployment, set it
+to the public analytics origin, such as `https://analytics.example.com` (without
+`/script.js`), in `apps/dashboard/.env` for Docker Compose or in the build
+environment. Next.js embeds this value at build time; rebuild and redeploy the
+dashboard after changing it. From this directory, run
+`docker compose up -d --build dashboard`. A missing value shows a configuration
+error instead of generating a localhost tracking script.
+
 ```sh
 npm install
 npm run dev

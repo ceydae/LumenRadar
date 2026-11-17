@@ -37,9 +37,10 @@ export async function readPageviews(
 }
 
 export function trackingSnippet(websiteId: string) {
-  const url = new URL(
-    process.env.NEXT_PUBLIC_UMAMI_URL || 'http://localhost:3054',
-  );
+  const publicUrl = process.env.NEXT_PUBLIC_UMAMI_URL?.trim();
+  if (!publicUrl)
+    throw new Error('NEXT_PUBLIC_UMAMI_URL must be set before building the dashboard.');
+  const url = new URL(publicUrl);
   if (
     !['http:', 'https:'].includes(url.protocol) ||
     url.hostname === 'umami' ||

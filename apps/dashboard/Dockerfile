@@ -20,7 +20,7 @@ CMD ["node", "node_modules/next/dist/bin/next", "dev", "--hostname", "0.0.0.0", 
 FROM dependencies AS build
 
 ARG NEXT_PUBLIC_API_URL=http://localhost:3051
-ARG NEXT_PUBLIC_UMAMI_URL=http://localhost:3054
+ARG NEXT_PUBLIC_UMAMI_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_UMAMI_URL=$NEXT_PUBLIC_UMAMI_URL
 ENV NEXT_TELEMETRY_DISABLED=1
