@@ -43,7 +43,7 @@ export default function ProjectForm({
         id="projectName"
         name="projectName"
         label="Project name"
-        placeholder="e.g. Orbit"
+        placeholder="Enter project name"
         defaultValue={project?.name}
         required
         pattern={String.raw`.*\S.*`}
