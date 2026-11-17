@@ -30,7 +30,7 @@ services:
     restart: always
     environment:
       NODE_ENV: production
-      PORT: ${PORT:-3051}
+      PORT: 3051
       BETTER_AUTH_URL: ${BETTER_AUTH_URL:?Set BETTER_AUTH_URL in .env}
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Set BETTER_AUTH_SECRET in .env}
       CLIENT_ORIGIN: ${CLIENT_ORIGIN:?Set CLIENT_ORIGIN in .env}
